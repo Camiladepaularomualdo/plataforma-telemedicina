@@ -1,0 +1,95 @@
+<div class="agenda-layout">
+    <header class="agenda-header">
+        <div class="header-content container">
+            <div class="logo">
+                <h2>Todos os Atendimentos</h2>
+            </div>
+            <div class="actions">
+                <button class="secondary" (click)="goBack()">Voltar para Agenda</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container agenda-main">
+        <div class="agenda-card card">
+
+            <div class="filters-row">
+                <div class="filter-group">
+                    <label>Buscar Paciente</label>
+                    <input type="text" [(ngModel)]="filterName" (ngModelChange)="applyFilters()" placeholder="Nome...">
+                </div>
+
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="0">Agendado</option>
+                        <option value="1">Em Espera</option>
+                        <option value="2">Atendido</option>
+                        <option value="3">Faltou</option>
+                        <option value="4">Cancelado</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Mês</label>
+                    <select [(ngModel)]="filterMonth" (ngModelChange)="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="1">Janeiro</option>
+                        <option value="2">Fevereiro</option>
+                        <option value="3">Março</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Maio</option>
+                        <option value="6">Junho</option>
+                        <option value="7">Julho</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Dia (1-31)</label>
+                    <input type="number" min="1" max="31" [(ngModel)]="filterDay" (ngModelChange)="applyFilters()"
+                        placeholder="Ex: 15">
+                </div>
+            </div>
+
+            <div class="loading" *ngIf="loading">Carregando...</div>
+
+            <div class="empty-state" *ngIf="!loading && filteredAppointments.length === 0">
+                <p>Nenhum atendimento encontrado para estes filtros.</p>
+            </div>
+
+            <div class="table-container" *ngIf="!loading && filteredAppointments.length > 0">
+                <table class="medical-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Paciente</th>
+                            <th>Telefone</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let apt of filteredAppointments">
+                            <td>{{ apt.date | date:'dd/MM/yyyy' }}</td>
+                            <td class="time-cell">{{ formatTime(apt.time) }}</td>
+                            <td class="name-cell">{{ apt.patient?.name }}</td>
+                            <td>{{ apt.patient?.phone || 'Não informado' }}</td>
+                            <td>
+                                <span class="status-badge" [ngClass]="getStatusClass(apt.status)">
+                                    {{ getStatusName(apt.status) }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+</div>

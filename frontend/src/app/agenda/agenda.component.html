@@ -1,0 +1,67 @@
+<div class="agenda-layout">
+    <header class="agenda-header">
+        <div class="header-content container">
+            <div class="logo">
+                <h2>Telemedicina</h2>
+            </div>
+            <div class="actions">
+                <button class="secondary" style="margin-right:1rem;" routerLink="/appointments">
+                    Ver Todos (Tabela)
+                </button>
+                <button class="primary" style="margin-right:0.5rem;" (click)="showPatientForm = true">+
+                    Paciente</button>
+                <button class="primary" style="margin-right:1rem;" (click)="showAppointmentForm = true">+
+                    Agendamento</button>
+                <button class="secondary" (click)="logout()">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container agenda-main">
+        <div class="agenda-card card">
+            <div class="month-selector">
+                <button class="secondary btn-icon" (click)="previousMonth()">&#8592;</button>
+                <h3 class="month-title">{{ monthName }}</h3>
+                <button class="secondary btn-icon" (click)="nextMonth()">&#8594;</button>
+            </div>
+
+            <div class="loading" *ngIf="loading">Carregando agendamentos...</div>
+
+            <div class="empty-state" *ngIf="!loading && appointments.length === 0">
+                <p>Nenhum atendimento agendado para este mês.</p>
+            </div>
+
+            <div class="calendar-container" *ngIf="!loading">
+                <div class="calendar-header-grid">
+                    <div class="weekday" *ngFor="let day of weekDays">{{ day }}</div>
+                </div>
+                <div class="calendar-body">
+                    <div class="calendar-week" *ngFor="let week of calendarWeeks">
+                        <div class="calendar-day" *ngFor="let d of week" [class.empty-day]="!d">
+                            <div class="day-number" *ngIf="d">{{ d.day }}</div>
+                            <div class="day-appointments" *ngIf="d">
+                                <div class="apt-badge" *ngFor="let apt of d.appointments"
+                                    [ngClass]="getStatusClass(apt.status)"
+                                    (click)="selectedAppointment = apt; $event.stopPropagation()">
+                                    {{ formatTime(apt.time) }} - {{ apt.patient?.name?.split(' ')[0] }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Patient Popup Component -->
+<app-patient-popup *ngIf="selectedAppointment" [appointment]="selectedAppointment" (close)="selectedAppointment = null"
+    (statusChanged)="loadAppointments()">
+</app-patient-popup>
+
+<app-patient-form *ngIf="showPatientForm" (close)="showPatientForm = false" (created)="onPatientCreated()">
+</app-patient-form>
+
+<app-appointment-form *ngIf="showAppointmentForm" [doctorId]="doctorId!" (close)="showAppointmentForm = false"
+    (created)="onAppointmentCreated()">
+</app-appointment-form>

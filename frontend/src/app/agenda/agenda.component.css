@@ -1,0 +1,174 @@
+.agenda-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.agenda-header {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content h2 {
+    margin: 0;
+    color: var(--primary);
+}
+
+.agenda-main {
+    flex: 1;
+    padding: 2rem 1rem;
+}
+
+.month-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.month-title {
+    margin: 0;
+    text-transform: capitalize;
+    font-size: 1.5rem;
+    color: var(--primary-dark);
+}
+
+.btn-icon {
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+}
+
+.loading,
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.calendar-container {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    margin-top: 1rem;
+}
+
+.calendar-header-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: var(--bg-color);
+    border-bottom: 1px solid var(--border);
+}
+
+.weekday {
+    padding: 0.75rem;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-light);
+    border-right: 1px solid var(--border);
+}
+
+.weekday:last-child {
+    border-right: none;
+}
+
+.calendar-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    min-height: 120px;
+    border-bottom: 1px solid var(--border);
+}
+
+.calendar-week:last-child {
+    border-bottom: none;
+}
+
+.calendar-day {
+    border-right: 1px solid var(--border);
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-day:last-child {
+    border-right: none;
+}
+
+.empty-day {
+    background: #f8fafc;
+}
+
+.day-number {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    align-self: flex-end;
+}
+
+.day-appointments {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.apt-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid transparent;
+}
+
+.apt-badge:hover {
+    filter: brightness(0.95);
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-0 {
+    /* Agendado */
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.status-1 {
+    /* Em Espera */
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.status-2 {
+    /* Atendido */
+    background-color: #dcfce3;
+    color: #166534;
+}
+
+.status-3 {
+    /* Faltou */
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.status-4 {
+    /* Cancelado */
+    background-color: #fee2e2;
+    color: #b91c1c;
+}

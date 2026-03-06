@@ -1,0 +1,52 @@
+<div class="modal-overlay" (click)="closePopup()">
+    <div class="modal-content card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Detalhes do Paciente</h3>
+            <button class="close-btn" (click)="closePopup()">&times;</button>
+        </div>
+
+        <div class="modal-body" *ngIf="appointment && appointment.patient">
+            <div class="info-group">
+                <label>Nome do Paciente</label>
+                <p>{{ appointment.patient.name }}</p>
+            </div>
+
+            <div class="info-group row">
+                <div class="col">
+                    <label>Data</label>
+                    <p>{{ appointment.date | date:'dd/MM/yyyy' }}</p>
+                </div>
+                <div class="col">
+                    <label>Hora</label>
+                    <p>{{ appointment.time }}</p>
+                </div>
+            </div>
+
+            <div class="info-group row">
+                <div class="col">
+                    <label>Telefone</label>
+                    <p>{{ appointment.patient.phone || 'Não informado' }}</p>
+                </div>
+                <div class="col">
+                    <label>Status</label>
+                    <div class="info-group">
+                        <p>Status:</p>
+                        <select class="status-select" [ngModel]="appointment.status"
+                            (ngModelChange)="onStatusChange($event)">
+                            <option [value]="0">Agendado</option>
+                            <option [value]="1">Em Espera</option>
+                            <option [value]="2">Atendido</option>
+                            <option [value]="3">Faltou</option>
+                            <option [value]="4">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <!-- Optional: buttons to change status -->
+            <button class="secondary full-width" (click)="closePopup()">Fechar</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="modal-overlay" (click)="close.emit()">
+    <div class="modal-content card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Novo Agendamento</h3>
+            <button class="close-btn" (click)="close.emit()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div *ngIf="errorStr" class="error-msg">{{ errorStr }}</div>
+
+            <div class="form-group">
+                <label>Paciente</label>
+                <select [(ngModel)]="appointment.patientId">
+                    <option [value]="null" disabled>Selecione um paciente</option>
+                    <option *ngFor="let p of patients" [value]="p.id">{{ p.name }} ({{ p.cpf }})</option>
+                </select>
+                <p style="font-size: 0.8rem; margin-top: 0.5rem; color: var(--text-light)">
+                    O paciente não está na lista? Cadastre-o primeiro.
+                </p>
+            </div>
+
+            <div class="form-group row">
+                <div class="col">
+                    <label>Data</label>
+                    <input type="date" [(ngModel)]="appointment.date" />
+                </div>
+                <div class="col">
+                    <label>Hora</label>
+                    <input type="time" [(ngModel)]="appointment.time" />
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="primary full-width" (click)="save()">Agendar</button>
+        </div>
+    </div>
+</div>

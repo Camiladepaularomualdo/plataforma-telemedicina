@@ -1,0 +1,139 @@
+.agenda-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.agenda-header {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content h2 {
+    margin: 0;
+    color: var(--primary);
+}
+
+.agenda-main {
+    flex: 1;
+    padding: 2rem 1rem;
+}
+
+.filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 150px;
+}
+
+.filter-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.medical-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.medical-table th {
+    background-color: var(--bg-color);
+    padding: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--border);
+}
+
+.medical-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dark);
+}
+
+.medical-table tbody tr:hover {
+    background-color: #f0f9ff;
+}
+
+.time-cell {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.name-cell {
+    font-weight: 500;
+}
+
+.loading,
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-0 {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.status-1 {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.status-2 {
+    background-color: #dcfce3;
+    color: #166534;
+}
+
+.status-3 {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.status-4 {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
