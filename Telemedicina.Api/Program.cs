@@ -21,6 +21,7 @@ builder.Services.AddScoped<Telemedicina.Interfaces.IAppointmentRepository, Telem
 builder.Services.AddScoped<Telemedicina.Interfaces.IDoctorService, Telemedicina.Services.DoctorService>();
 builder.Services.AddScoped<Telemedicina.Interfaces.IPatientService, Telemedicina.Services.PatientService>();
 builder.Services.AddScoped<Telemedicina.Interfaces.IAppointmentService, Telemedicina.Services.AppointmentService>();
+builder.Services.AddScoped<Telemedicina.Interfaces.IEmailService, Telemedicina.Services.EmailService>();
 
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>

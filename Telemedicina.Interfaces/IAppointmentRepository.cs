@@ -8,4 +8,5 @@ public interface IAppointmentRepository : IGenericRepository<Appointment>
 {
     Task<IEnumerable<Appointment>> GetDoctorAppointmentsByMonthAsync(int doctorId, int year, int month);
     Task<IEnumerable<Appointment>> GetDoctorAppointmentsAsync(int doctorId);
+    Task<Appointment?> GetAppointmentWithPatientAsync(int id);
 }

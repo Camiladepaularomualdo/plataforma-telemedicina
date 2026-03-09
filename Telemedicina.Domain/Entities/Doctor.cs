@@ -11,4 +11,8 @@ public class Doctor
     public string Cpf { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
     public DateTime BirthDate { get; set; }
+    
+    // Email Integration Config
+    public string? GmailAddress { get; set; }
+    public string? GmailAppPassword { get; set; }
 }

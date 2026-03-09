@@ -31,4 +31,11 @@ public class AppointmentRepository : GenericRepository<Appointment>, IAppointmen
             .ThenBy(a => a.Time)
             .ToListAsync();
     }
+
+    public async Task<Appointment?> GetAppointmentWithPatientAsync(int id)
+    {
+        return await _dbSet
+            .Include(a => a.Patient)
+            .FirstOrDefaultAsync(a => a.Id == id);
+    }
 }

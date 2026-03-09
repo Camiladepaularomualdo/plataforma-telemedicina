@@ -8,4 +8,6 @@ public interface IDoctorService
 {
     Task<Doctor?> AuthenticateAsync(string email, string password);
     Task<Doctor> RegisterAsync(Doctor doctor);
+    Task<Doctor?> GetGmailConfigAsync(int doctorId);
+    Task<bool> SaveGmailConfigAsync(int doctorId, string gmailAddress, string gmailAppPassword);
 }

@@ -1,0 +1,36 @@
+<div class="modal-overlay" (click)="closePopup()">
+    <div class="modal-content card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Configurar Envio por Gmail</h3>
+            <button class="close-btn" (click)="closePopup()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <p class="config-desc">
+                Para enviar Links de Atendimento diretamente pelo sistema, precisamos que você configure sua conta do
+                Google.<br><br>
+                <b>Importante:</b> Você precisa gerar uma "Senha de App" nas configurações de segurança da sua conta
+                Google, e não usar sua senha principal.
+            </p>
+
+            <div *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</div>
+
+            <div class="form-group">
+                <label>Seu Endereço do Gmail</label>
+                <input type="email" class="input-field" [(ngModel)]="gmailAddress" placeholder="medico@gmail.com">
+            </div>
+
+            <div class="form-group">
+                <label>Senha de App do Google</label>
+                <input type="password" class="input-field" [(ngModel)]="gmailAppPassword" placeholder="16 caracteres">
+            </div>
+        </div>
+
+        <div class="modal-footer row">
+            <button class="secondary" (click)="closePopup()" [disabled]="isSaving">Cancelar</button>
+            <button class="primary" (click)="saveConfig()" [disabled]="isSaving">
+                {{ isSaving ? 'Salvando...' : 'Salvar e Enviar' }}
+            </button>
+        </div>
+    </div>
+</div>

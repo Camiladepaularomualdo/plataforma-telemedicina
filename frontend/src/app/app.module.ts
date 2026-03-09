@@ -11,6 +11,7 @@ import { PatientPopupComponent } from './patient-popup/patient-popup.component';
 import { PatientFormComponent } from './patient-form/patient-form.component';
 import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
 import { AppointmentsListComponent } from './appointments-list/appointments-list.component';
+import { EmailConfigPopupComponent } from './email-config-popup/email-config-popup.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AppointmentsListComponent } from './appointments-list/appointments-list
     PatientPopupComponent,
     PatientFormComponent,
     AppointmentFormComponent,
-    AppointmentsListComponent
+    AppointmentsListComponent,
+    EmailConfigPopupComponent
   ],
   imports: [
     BrowserModule,

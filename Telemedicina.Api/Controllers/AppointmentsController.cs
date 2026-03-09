@@ -70,4 +70,30 @@ public class AppointmentsController : ControllerBase
             return StatusCode(500, ex.Message);
         }
     }
+
+    [HttpPost("{id}/send-email")]
+    public async Task<IActionResult> SendMeetingEmail(int id, [FromServices] IEmailService emailService, [FromServices] IAppointmentRepository appointmentRepository, [FromServices] IDoctorService doctorService)
+    {
+        var appointment = await appointmentRepository.GetAppointmentWithPatientAsync(id);
+        if (appointment == null) return NotFound("Appointment not found.");
+        if (string.IsNullOrEmpty(appointment.MeetingUrl)) return BadRequest("Esta consulta ainda não tem uma URL gerada.");
+        if (appointment.Patient == null || string.IsNullOrEmpty(appointment.Patient.Email)) return BadRequest("Paciente não possui email cadastrado.");
+        if (appointment.DoctorId <= 0) return BadRequest("Médico inválido para esta consulta.");
+
+        var doctor = await doctorService.GetGmailConfigAsync(appointment.DoctorId);
+        if (doctor == null || string.IsNullOrEmpty(doctor.GmailAddress) || string.IsNullOrEmpty(doctor.GmailAppPassword))
+        {
+            return BadRequest("Doctor Gmail configuration is missing.");
+        }
+
+        try
+        {
+            await emailService.SendMeetingUrlEmailAsync(appointment.Patient.Email, doctor.Name, appointment.MeetingUrl, doctor.GmailAddress, doctor.GmailAppPassword);
+            return Ok();
+        }
+        catch (System.Exception ex)
+        {
+            return StatusCode(500, "Erro ao enviar email: " + ex.Message);
+        }
+    }
 }

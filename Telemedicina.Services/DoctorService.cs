@@ -41,6 +41,24 @@ public class DoctorService : IDoctorService
         return doctor;
     }
 
+    public async Task<Doctor?> GetGmailConfigAsync(int doctorId)
+    {
+        return await _repository.GetByIdAsync(doctorId);
+    }
+
+    public async Task<bool> SaveGmailConfigAsync(int doctorId, string gmailAddress, string gmailAppPassword)
+    {
+        var doctor = await _repository.GetByIdAsync(doctorId);
+        if (doctor == null) return false;
+
+        doctor.GmailAddress = gmailAddress;
+        doctor.GmailAppPassword = gmailAppPassword;
+        _repository.Update(doctor);
+        await _repository.SaveChangesAsync();
+
+        return true;
+    }
+
     private string ComputeHash(string input)
     {
         using var sha = SHA256.Create();

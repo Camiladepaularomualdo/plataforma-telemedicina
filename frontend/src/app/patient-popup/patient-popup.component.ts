@@ -62,4 +62,50 @@ export class PatientPopupComponent {
       });
     }
   }
+
+  showEmailConfig = false;
+  isSendingEmail = false;
+
+  enviarPorEmail() {
+    this.isSendingEmail = true;
+
+    // First, check if the doctor has Gmail configured
+    this.http.get<{ hasConfig: boolean, gmailAddress: string }>(`http://localhost:5111/api/doctors/${this.appointment.doctorId}/gmail-config`).subscribe({
+      next: (config) => {
+        if (config.hasConfig) {
+          // Doctor has config, send the email
+          this.executarEnvio();
+        } else {
+          // Doctor doesn't have config, show the setup modal
+          this.isSendingEmail = false;
+          this.showEmailConfig = true;
+        }
+      },
+      error: (err) => {
+        this.isSendingEmail = false;
+        console.error('Failed to check config', err);
+        alert('Erro ao verificar configurações de email.');
+      }
+    });
+  }
+
+  executarEnvio() {
+    this.http.post(`http://localhost:5111/api/appointments/${this.appointment.id}/send-email`, {}).subscribe({
+      next: () => {
+        this.isSendingEmail = false;
+        alert('Email enviado com sucesso para o paciente!');
+      },
+      error: (err) => {
+        this.isSendingEmail = false;
+        console.error('Failed to send email', err);
+        alert('Erro ao enviar email. ' + (err.error || 'Verifique o console para mais detalhes.'));
+      }
+    });
+  }
+
+  onConfigSaved() {
+    this.showEmailConfig = false;
+    // Retry sending the email now that config is saved
+    this.enviarPorEmail();
+  }
 }
