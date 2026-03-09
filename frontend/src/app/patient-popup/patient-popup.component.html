@@ -43,11 +43,31 @@
                 </div>
             </div>
 
-            <div class="info-group" *ngIf="appointment.meetingUrl">
-                <label>URL de Atendimento</label>
-                <div class="url-actions">
-                    <a [href]="appointment.meetingUrl" target="_blank" class="primary button-link">Ir para Consulta</a>
-                    <button class="secondary" (click)="copyUrl()">Copiar Link</button>
+            <div class="meeting-url-container" *ngIf="appointment.meetingUrl">
+                <div class="meeting-url-header">
+                    <svg class="meeting-icon" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z">
+                        </path>
+                    </svg>
+                    <h4>Sala de Atendimento Criada</h4>
+                </div>
+                <div class="meeting-url-body">
+                    <div class="url-badge">
+                        <span class="url-text">{{ appointment.meetingUrl }}</span>
+                        <button class="icon-btn copy-btn" (click)="copyUrl()" title="Copiar Link">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                    <a [href]="appointment.meetingUrl" target="_blank" class="primary full-width join-btn">
+                        Ir para Consulta
+                    </a>
                 </div>
             </div>
         </div>

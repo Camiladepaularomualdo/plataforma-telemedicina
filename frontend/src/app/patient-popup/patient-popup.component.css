@@ -107,3 +107,95 @@
     border-top: 1px solid var(--border);
     padding-top: 1.5rem;
 }
+
+/* Meeting URL Container Styles */
+.meeting-url-container {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce3 100%);
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+}
+
+.meeting-url-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #166534;
+    margin-bottom: 1rem;
+}
+
+.meeting-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.meeting-url-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.meeting-url-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.url-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #bbf7d0;
+    font-family: monospace;
+    color: #374151;
+}
+
+.url-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 85%;
+    font-size: 0.9rem;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 0.25rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.icon-btn:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+}
+
+.icon-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.join-btn {
+    text-align: center;
+    background-color: #16a34a;
+    color: white;
+    text-decoration: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.join-btn:hover {
+    background-color: #15803d;
+}
