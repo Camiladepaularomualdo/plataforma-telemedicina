@@ -24,7 +24,11 @@ public class EmailService : IEmailService
                 <p>Clique no link abaixo para entrar na chamada de vídeo:</p>
                 <p><a href='{meetingUrl}'>{meetingUrl}</a></p>
                 <br>
-                <p>Atenciosamente,<br>Equipe Telemedicina.</p>
+                <p>Atenciosamente,<br>Equipe Clinfy-Atendimento-Online.</p>
+                <br>
+                <p style='color: #64748b; font-size: 0.85rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; margin-top: 2rem;'>
+                    clinfy
+                </p>
             ",
             IsBodyHtml = true
         };
