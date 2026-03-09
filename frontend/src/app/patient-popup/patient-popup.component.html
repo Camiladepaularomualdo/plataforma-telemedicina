@@ -6,88 +6,115 @@
         </div>
 
         <div class="modal-body" *ngIf="appointment && appointment.patient">
-            <div class="info-group">
-                <label>Nome do Paciente</label>
-                <p>{{ appointment.patient.name }}</p>
-            </div>
+            <div class="modal-columns">
+                <!-- Coluna da Esquerda: Informações do Paciente -->
+                <div class="modal-left-col">
+                    <div class="info-group">
+                        <label>Nome do Paciente</label>
+                        <p>{{ appointment.patient.name }}</p>
+                    </div>
 
-            <div class="info-group row">
-                <div class="col">
-                    <label>Telefone</label>
-                    <p>{{ appointment.patient.phone || 'Não informado' }}</p>
-                </div>
-                <div class="col">
-                    <label>E-mail</label>
-                    <p>{{ appointment.patient.email || 'Não informado' }}</p>
-                </div>
-            </div>
-
-            <div class="info-group row">
-                <div class="col">
-                    <label>Data</label>
-                    <p>{{ appointment.date | date:'dd/MM/yyyy' }}</p>
-                </div>
-                <div class="col">
-                    <label>Hora</label>
-                    <p>{{ appointment.time }}</p>
-                </div>
-            </div>
-
-            <div class="info-group">
-                <label style="margin-bottom: 0.5rem; display: block;">Status</label>
-                <select class="status-select" [ngModel]="appointment.status" (ngModelChange)="onStatusChange($event)">
-                    <option [value]="0">Agendado</option>
-                    <option [value]="1">Em Espera</option>
-                    <option [value]="2">Atendido</option>
-                    <option [value]="3">Faltou</option>
-                    <option [value]="4">Cancelado</option>
-                </select>
-            </div>
-
-            <div class="meeting-url-container" *ngIf="appointment.meetingUrl">
-                <div class="meeting-url-header">
-                    <svg class="meeting-icon" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z">
-                        </path>
-                    </svg>
-                    <h4>Sala de Atendimento Criada</h4>
-                </div>
-                <div class="meeting-url-body">
-                    <div class="url-badge">
-                        <span class="url-text">{{ appointment.meetingUrl }}</span>
-                        <div class="url-badge-actions">
-                            <button class="icon-btn email-btn" (click)="enviarPorEmail()" [disabled]="isSendingEmail"
-                                title="Enviar por Email">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                    </path>
-                                </svg>
-                            </button>
-                            <button class="icon-btn copy-btn" (click)="copyUrl()" title="Copiar Link">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                                    </path>
-                                </svg>
-                            </button>
+                    <div class="info-group row">
+                        <div class="col">
+                            <label>Telefone</label>
+                            <p>{{ appointment.patient.phone || 'Não informado' }}</p>
+                        </div>
+                        <div class="col">
+                            <label>E-mail</label>
+                            <p>{{ appointment.patient.email || 'Não informado' }}</p>
                         </div>
                     </div>
-                    <a [href]="appointment.meetingUrl" target="_blank" class="primary full-width join-btn">
-                        Ir para Consulta
-                    </a>
+
+                    <div class="info-group row">
+                        <div class="col">
+                            <label>Data</label>
+                            <p>{{ appointment.date | date:'dd/MM/yyyy' }}</p>
+                        </div>
+                        <div class="col">
+                            <label>Hora</label>
+                            <p>{{ appointment.time }}</p>
+                        </div>
+                    </div>
+
+                    <div class="info-group">
+                        <label style="margin-bottom: 0.5rem; display: block;">Status</label>
+                        <select class="status-select" [ngModel]="appointment.status"
+                            (ngModelChange)="onStatusChange($event)">
+                            <option [value]="0">Agendado</option>
+                            <option [value]="1">Em Espera</option>
+                            <option [value]="2">Atendido</option>
+                            <option [value]="3">Faltou</option>
+                            <option [value]="4">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Coluna da Direita: Telemedicina -->
+                <div class="modal-right-col">
+                    <div class="telemedicine-section">
+                        <h4>Atendimento Online</h4>
+
+                        <!-- Estado 1: Nenhuma sala criada -->
+                        <div class="no-meeting-state" *ngIf="!appointment.meetingUrl">
+                            <div class="empty-state-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <p>A sala de videoconferência ainda não foi gerada para este agendamento.</p>
+                            <button class="primary full-width" (click)="iniciarAtendimento()">Gerar Link de
+                                Atendimento</button>
+                        </div>
+
+                        <!-- Estado 2: Sala criada -->
+                        <div class="meeting-url-container" *ngIf="appointment.meetingUrl">
+                            <div class="meeting-url-header">
+                                <svg class="meeting-icon" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z">
+                                    </path>
+                                </svg>
+                                <h4>Sala Aberta</h4>
+                            </div>
+                            <div class="meeting-url-body">
+                                <div class="url-badge">
+                                    <span class="url-text">{{ appointment.meetingUrl }}</span>
+                                    <div class="url-badge-actions">
+                                        <button class="icon-btn email-btn" (click)="enviarPorEmail()"
+                                            [disabled]="isSendingEmail" title="Enviar por Email">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                        <button class="icon-btn copy-btn" (click)="copyUrl()" title="Copiar Link">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <a [href]="appointment.meetingUrl" target="_blank" class="primary full-width join-btn">
+                                    Acessar Consulta
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="modal-footer">
-            <button class="primary full-width" *ngIf="!appointment.meetingUrl" (click)="iniciarAtendimento()">Iniciar
-                atendimento</button>
-            <button class="secondary full-width" (click)="closePopup()">Fechar</button>
+            <button class="secondary full-width" (click)="closePopup()">Fechar Janela</button>
         </div>
     </div>
 </div>

@@ -13,10 +13,12 @@
 }
 
 .modal-content {
-    width: 100%;
-    max-width: 500px;
+    width: 90%;
+    max-width: 800px;
     background-color: var(--surface);
     border-radius: 12px;
+    padding: 2rem;
+    box-sizing: border-box;
     animation: slideIn 0.2s ease-out;
 }
 
@@ -110,7 +112,6 @@
 
 /* Meeting URL Container Styles */
 .meeting-url-container {
-    margin-top: 1.5rem;
     padding: 1.25rem;
     background: linear-gradient(135deg, #f0fdf4 0%, #dcfce3 100%);
     border: 1px solid #bbf7d0;
@@ -152,14 +153,24 @@
     border: 1px solid #bbf7d0;
     font-family: monospace;
     color: #374151;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.url-badge-actions {
+    display: flex;
+    gap: 0.25rem;
+    flex-shrink: 0;
 }
 
 .url-text {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 85%;
-    font-size: 0.9rem;
+    min-width: 0;
+    flex-grow: 1;
+    font-size: 0.85rem;
+    margin-right: 0.5rem;
 }
 
 .icon-btn {
@@ -198,4 +209,62 @@
 
 .join-btn:hover {
     background-color: #15803d;
+}
+
+.modal-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+}
+
+.modal-left-col,
+.modal-right-col {
+    min-width: 0;
+}
+
+.telemedicine-section h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+}
+
+.no-meeting-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background-color: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+}
+
+.empty-state-icon {
+    background-color: #e2e8f0;
+    color: #64748b;
+    padding: 1rem;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.empty-state-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.no-meeting-state p {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .modal-columns {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
 }
