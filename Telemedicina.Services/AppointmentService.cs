@@ -44,4 +44,37 @@ public class AppointmentService : IAppointmentService
         await _repository.SaveChangesAsync();
         return true;
     }
+
+    public async Task<string?> GenerateMeetingUrlAsync(int appointmentId, string apiKey)
+    {
+        var appointment = await _repository.GetByIdAsync(appointmentId);
+        if (appointment == null) return null;
+
+        if (!string.IsNullOrEmpty(appointment.MeetingUrl)) return appointment.MeetingUrl;
+
+        using var client = new System.Net.Http.HttpClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+
+        // Whereby expects endDate. We add 1 hour from appointment time as a default.
+        var endDate = appointment.Date.Date.Add(appointment.Time).AddHours(1).ToString("yyyy-MM-ddTHH:mm:ssZ");
+
+        var requestBody = new { endDate = endDate, fields = new[] { "hostRoomUrl" } };
+        var content = new System.Net.Http.StringContent(System.Text.Json.JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json");
+
+        var response = await client.PostAsync("https://api.whereby.dev/v1/meetings", content);
+        if (response.IsSuccessStatusCode)
+        {
+            var responseString = await response.Content.ReadAsStringAsync();
+            using var document = System.Text.Json.JsonDocument.Parse(responseString);
+            var roomUrl = document.RootElement.GetProperty("roomUrl").GetString();
+
+            appointment.MeetingUrl = roomUrl;
+            _repository.Update(appointment);
+            await _repository.SaveChangesAsync();
+
+            return roomUrl;
+        }
+
+        return null;
+    }
 }

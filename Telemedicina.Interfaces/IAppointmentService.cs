@@ -10,4 +10,5 @@ public interface IAppointmentService
     Task<IEnumerable<Appointment>> GetDoctorAppointmentsByMonthAsync(int doctorId, int year, int month);
     Task<IEnumerable<Appointment>> GetDoctorAppointmentsAsync(int doctorId);
     Task<bool> UpdateStatusAsync(int appointmentId, Telemedicina.Domain.Enums.AppointmentStatus status);
+    Task<string?> GenerateMeetingUrlAsync(int appointmentId, string apiKey);
 }

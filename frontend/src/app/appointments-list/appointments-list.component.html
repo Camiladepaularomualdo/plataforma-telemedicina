@@ -72,6 +72,7 @@
                             <th>Paciente</th>
                             <th>Telefone</th>
                             <th>Status</th>
+                            <th>URL de Atendimento</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,6 +85,19 @@
                                 <span class="status-badge" [ngClass]="getStatusClass(apt.status)">
                                     {{ getStatusName(apt.status) }}
                                 </span>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="apt.meetingUrl; else noUrl">
+                                    <div class="url-actions">
+                                        <a [href]="apt.meetingUrl" target="_blank" class="primary button-link"
+                                            style="margin-right:0.5rem">Abrir</a>
+                                        <button class="secondary btn-icon" (click)="copyUrl(apt.meetingUrl)"
+                                            title="Copiar URL">📋</button>
+                                    </div>
+                                </ng-container>
+                                <ng-template #noUrl>
+                                    <span class="text-muted">-</span>
+                                </ng-template>
                             </td>
                         </tr>
                     </tbody>

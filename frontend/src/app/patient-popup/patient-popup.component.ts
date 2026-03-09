@@ -41,4 +41,25 @@ export class PatientPopupComponent {
       default: return 'Desconhecido';
     }
   }
+
+  iniciarAtendimento() {
+    this.http.post(`http://localhost:5111/api/appointments/${this.appointment.id}/generate-meeting`, {}).subscribe({
+      next: (res: any) => {
+        this.appointment.meetingUrl = res.meetingUrl;
+        this.statusChanged.emit();
+      },
+      error: (err) => {
+        console.error('Failed to generate meeting URL', err);
+        alert('Erro ao gerar URL da consulta. Verifique se a API Key do Whereby está configurada.');
+      }
+    });
+  }
+
+  copyUrl() {
+    if (this.appointment.meetingUrl) {
+      navigator.clipboard.writeText(this.appointment.meetingUrl).then(() => {
+        alert('URL copiada para a área de transferência!');
+      });
+    }
+  }
 }

@@ -112,4 +112,12 @@ export class AppointmentsListComponent implements OnInit {
   goBack() {
     this.router.navigate(['/agenda']);
   }
+
+  copyUrl(url: string) {
+    if (url) {
+      navigator.clipboard.writeText(url).then(() => {
+        alert('URL copiada para a área de transferência!');
+      });
+    }
+  }
 }

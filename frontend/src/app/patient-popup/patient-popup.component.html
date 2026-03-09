@@ -42,10 +42,19 @@
                     </div>
                 </div>
             </div>
+
+            <div class="info-group" *ngIf="appointment.meetingUrl">
+                <label>URL de Atendimento</label>
+                <div class="url-actions">
+                    <a [href]="appointment.meetingUrl" target="_blank" class="primary button-link">Ir para Consulta</a>
+                    <button class="secondary" (click)="copyUrl()">Copiar Link</button>
+                </div>
+            </div>
         </div>
 
         <div class="modal-footer">
-            <!-- Optional: buttons to change status -->
+            <button class="primary full-width" *ngIf="!appointment.meetingUrl" (click)="iniciarAtendimento()">Iniciar
+                atendimento</button>
             <button class="secondary full-width" (click)="closePopup()">Fechar</button>
         </div>
     </div>

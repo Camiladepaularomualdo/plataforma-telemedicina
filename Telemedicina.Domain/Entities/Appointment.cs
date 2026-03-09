@@ -13,4 +13,5 @@ public class Appointment
     public DateTime Date { get; set; }
     public TimeSpan Time { get; set; }
     public AppointmentStatus Status { get; set; }
+    public string? MeetingUrl { get; set; }
 }

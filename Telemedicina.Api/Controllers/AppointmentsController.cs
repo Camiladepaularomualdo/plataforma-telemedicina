@@ -51,4 +51,23 @@ public class AppointmentsController : ControllerBase
         if (!success) return NotFound();
         return Ok();
     }
+
+    [HttpPost("{id}/generate-meeting")]
+    public async Task<IActionResult> GenerateMeetingUrl(int id, [FromServices] Microsoft.Extensions.Configuration.IConfiguration config)
+    {
+        var apiKey = config["Whereby:ApiKey"];
+        if (string.IsNullOrEmpty(apiKey) || apiKey.Contains("YOUR_WHEREBY_API_KEY"))
+            return BadRequest("Whereby API Key not configured properly.");
+
+        try
+        {
+            var url = await _appointmentService.GenerateMeetingUrlAsync(id, apiKey);
+            if (url == null) return NotFound("Appointment not found or failed to generate URL from Whereby.");
+            return Ok(new { meetingUrl = url });
+        }
+        catch (System.Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
 }
