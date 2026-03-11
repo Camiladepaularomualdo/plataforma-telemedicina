@@ -6,12 +6,15 @@
             </div>
             <div class="actions">
                 <button class="secondary" style="margin-right:1rem;" routerLink="/appointments">
-                    Ver Todos (Tabela)
+                    Ver Todos (Lista)
                 </button>
                 <button class="primary" style="margin-right:0.5rem;" (click)="showPatientForm = true">+
                     Paciente</button>
                 <button class="primary" style="margin-right:1rem;" (click)="showAppointmentForm = true">+
                     Agendamento</button>
+                <button class="secondary" style="margin-right:1rem;" routerLink="/dashboard" title="Dashboard">
+                    <i class="pi pi-chart-line"></i>
+                </button>
                 <button class="secondary" (click)="logout()">Sair</button>
             </div>
         </div>

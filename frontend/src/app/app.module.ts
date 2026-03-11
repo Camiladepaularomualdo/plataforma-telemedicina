@@ -12,6 +12,8 @@ import { PatientFormComponent } from './patient-form/patient-form.component';
 import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
 import { AppointmentsListComponent } from './appointments-list/appointments-list.component';
 import { EmailConfigPopupComponent } from './email-config-popup/email-config-popup.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -22,13 +24,15 @@ import { EmailConfigPopupComponent } from './email-config-popup/email-config-pop
     PatientFormComponent,
     AppointmentFormComponent,
     AppointmentsListComponent,
-    EmailConfigPopupComponent
+    EmailConfigPopupComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
