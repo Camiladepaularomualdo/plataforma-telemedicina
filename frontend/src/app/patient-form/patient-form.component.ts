@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-patient-form',
@@ -16,7 +17,7 @@ export class PatientFormComponent {
   constructor(private http: HttpClient) { }
 
   save() {
-    this.http.post<any>('http://localhost:5111/api/patients', this.patient).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/patients`, this.patient).subscribe({
       next: (res) => {
         this.created.emit(res);
         this.close.emit();

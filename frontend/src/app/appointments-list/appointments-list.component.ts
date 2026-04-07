@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-appointments-list',
@@ -33,7 +34,7 @@ export class AppointmentsListComponent implements OnInit {
 
   loadAppointments() {
     this.loading = true;
-    this.http.get<any[]>(`http://localhost:5111/api/appointments/doctor/${this.doctorId}/all`)
+    this.http.get<any[]>(`${environment.apiUrl}/appointments/doctor/${this.doctorId}/all`)
       .subscribe({
         next: (data) => {
           this.appointments = data;

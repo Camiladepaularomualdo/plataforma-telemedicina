@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-appointment-form',
@@ -22,7 +23,7 @@ export class AppointmentFormComponent implements OnInit {
   }
 
   loadPatients() {
-    this.http.get<any[]>('http://localhost:5111/api/patients').subscribe(data => {
+    this.http.get<any[]>(`${environment.apiUrl}/patients`).subscribe(data => {
       this.patients = data;
     });
   }
@@ -40,7 +41,7 @@ export class AppointmentFormComponent implements OnInit {
       time: this.appointment.time + ':00' // SQL Server TimeSpan expects hh:mm:ss format
     };
 
-    this.http.post<any>('http://localhost:5111/api/appointments', payload).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/appointments`, payload).subscribe({
       next: (res) => {
         this.created.emit(res);
         this.close.emit();

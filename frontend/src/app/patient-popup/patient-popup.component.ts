@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-patient-popup',
@@ -19,7 +20,7 @@ export class PatientPopupComponent {
 
   onStatusChange(newStatus: any) {
     const statusNum = parseInt(newStatus, 10);
-    this.http.patch(`http://localhost:5111/api/appointments/${this.appointment.id}/status/${statusNum}`, {}).subscribe({
+    this.http.patch(`${environment.apiUrl}/appointments/${this.appointment.id}/status/${statusNum}`, {}).subscribe({
       next: () => {
         this.appointment.status = statusNum;
         this.statusChanged.emit();
@@ -43,7 +44,7 @@ export class PatientPopupComponent {
   }
 
   iniciarAtendimento() {
-    this.http.post(`http://localhost:5111/api/appointments/${this.appointment.id}/generate-meeting`, {}).subscribe({
+    this.http.post(`${environment.apiUrl}/appointments/${this.appointment.id}/generate-meeting`, {}).subscribe({
       next: (res: any) => {
         this.appointment.meetingUrl = res.meetingUrl;
         this.statusChanged.emit();
@@ -70,7 +71,7 @@ export class PatientPopupComponent {
     this.isSendingEmail = true;
 
     // First, check if the doctor has Gmail configured
-    this.http.get<{ hasConfig: boolean, gmailAddress: string }>(`http://localhost:5111/api/doctors/${this.appointment.doctorId}/gmail-config`).subscribe({
+    this.http.get<{ hasConfig: boolean, gmailAddress: string }>(`${environment.apiUrl}/doctors/${this.appointment.doctorId}/gmail-config`).subscribe({
       next: (config) => {
         if (config.hasConfig) {
           // Doctor has config, send the email
@@ -90,7 +91,7 @@ export class PatientPopupComponent {
   }
 
   executarEnvio() {
-    this.http.post(`http://localhost:5111/api/appointments/${this.appointment.id}/send-email`, {}).subscribe({
+    this.http.post(`${environment.apiUrl}/appointments/${this.appointment.id}/send-email`, {}).subscribe({
       next: () => {
         this.isSendingEmail = false;
         alert('Email enviado com sucesso para o paciente!');

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,6 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   isLoginMode = true;
-  apiUrl = 'https://localhost:7179/api/auth'; // Default HTTPS port for .NET 9. Or http://localhost:5122. Ensure this matches what runs.
 
   // Login fields
   loginEmail = '';
@@ -41,7 +41,7 @@ export class LoginComponent {
     // Usually .NET 9 Web API creates random ports. I'll read the launchSettings.json next to fix this.
 
     // For now:
-    this.http.post<any>('http://localhost:5111/api/auth/login', payload).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/auth/login`, payload).subscribe({
       next: (res) => {
         localStorage.setItem('doctorId', res.id);
         this.router.navigate(['/agenda']);
@@ -63,7 +63,7 @@ export class LoginComponent {
       birthDate: this.regBirthDate
     };
 
-    this.http.post<any>('http://localhost:5111/api/auth/register', payload).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/auth/register`, payload).subscribe({
       next: (res) => {
         this.loginEmail = this.regEmail;
         this.loginPassword = this.regPassword;

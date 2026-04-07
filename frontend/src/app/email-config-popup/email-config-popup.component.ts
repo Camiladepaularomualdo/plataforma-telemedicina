@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-email-config-popup',
@@ -32,7 +33,7 @@ export class EmailConfigPopupComponent {
       gmailAppPassword: this.gmailAppPassword
     };
 
-    this.http.post(`http://localhost:5111/api/doctors/${this.doctorId}/gmail-config`, payload).subscribe({
+    this.http.post(`${environment.apiUrl}/doctors/${this.doctorId}/gmail-config`, payload).subscribe({
       next: () => {
         this.isSaving = false;
         this.configSaved.emit();

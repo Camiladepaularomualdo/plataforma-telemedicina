@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-agenda',
@@ -50,7 +51,7 @@ export class AgendaComponent implements OnInit {
     this.loading = true;
     const year = this.currentDate.getFullYear();
     const month = this.currentDate.getMonth() + 1;
-    this.http.get<any[]>(`http://localhost:5111/api/appointments/doctor/${this.doctorId}/year/${year}/month/${month}`)
+    this.http.get<any[]>(`${environment.apiUrl}/appointments/doctor/${this.doctorId}/year/${year}/month/${month}`)
       .subscribe({
         next: (data) => {
           this.appointments = data;
