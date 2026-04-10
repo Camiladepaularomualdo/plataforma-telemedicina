@@ -44,6 +44,7 @@ export class PatientPopupComponent {
   }
 
   iniciarAtendimento() {
+    //alert(`${environment.apiUrl}/appointments/${this.appointment.id}/generate-meeting`);
     this.http.post(`${environment.apiUrl}/appointments/${this.appointment.id}/generate-meeting`, {}).subscribe({
       next: (res: any) => {
         this.appointment.meetingUrl = res.meetingUrl;

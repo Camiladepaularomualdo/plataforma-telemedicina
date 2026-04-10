@@ -56,7 +56,7 @@ public class AppointmentService : IAppointmentService
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
 
         // Whereby expects endDate. We add 1 hour from appointment time as a default.
-        var endDate = appointment.Date.Date.Add(appointment.Time).AddHours(1).ToString("yyyy-MM-ddTHH:mm:ssZ");
+        var endDate = appointment.Date.Date.Add(appointment.Time).AddHours(4).ToString("yyyy-MM-ddTHH:mm:ssZ");
 
         var requestBody = new { endDate = endDate, fields = new[] { "hostRoomUrl" } };
         var content = new System.Net.Http.StringContent(System.Text.Json.JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json");

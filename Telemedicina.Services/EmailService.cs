@@ -34,10 +34,14 @@ public class EmailService : IEmailService
         };
         message.To.Add(new MailAddress(patientEmail));
 
+        var passwordToUse = gmailAppPassword?.Replace("\n", "").Replace("\r", "").Replace(" ", "");
+
         using var client = new SmtpClient("smtp.gmail.com", 587)
         {
-            Credentials = new NetworkCredential(gmailAddress, gmailAppPassword),
-            EnableSsl = true
+            UseDefaultCredentials = false,
+            Credentials = new NetworkCredential(gmailAddress, passwordToUse),
+            EnableSsl = true,
+            DeliveryMethod = SmtpDeliveryMethod.Network
         };
 
         await client.SendMailAsync(message);
