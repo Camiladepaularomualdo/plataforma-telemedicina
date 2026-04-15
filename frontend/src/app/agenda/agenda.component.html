@@ -62,7 +62,7 @@
     (statusChanged)="loadAppointments()">
 </app-patient-popup>
 
-<app-patient-form *ngIf="showPatientForm" (close)="showPatientForm = false" (created)="onPatientCreated()">
+<app-patient-form *ngIf="showPatientForm" [doctorId]="doctorId!" (close)="showPatientForm = false" (created)="onPatientCreated()">
 </app-patient-form>
 
 <app-appointment-form *ngIf="showAppointmentForm" [doctorId]="doctorId!" (close)="showAppointmentForm = false"

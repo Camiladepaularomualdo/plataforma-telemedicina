@@ -10,4 +10,8 @@ public class Patient
     public string Phone { get; set; } = string.Empty;
     public DateTime BirthDate { get; set; }
     public string Cpf { get; set; } = string.Empty;
+
+    // Foreign key: doctor who registered this patient
+    public int? DoctorId { get; set; }
+    public Doctor? Doctor { get; set; }
 }

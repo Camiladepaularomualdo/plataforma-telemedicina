@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./patient-form.component.css']
 })
 export class PatientFormComponent {
+  @Input() doctorId!: number;
   @Output() close = new EventEmitter<void>();
   @Output() created = new EventEmitter<any>();
 
@@ -17,7 +18,8 @@ export class PatientFormComponent {
   constructor(private http: HttpClient) { }
 
   save() {
-    this.http.post<any>(`${environment.apiUrl}/patients`, this.patient).subscribe({
+    const payload = { ...this.patient, doctorId: this.doctorId };
+    this.http.post<any>(`${environment.apiUrl}/patients`, payload).subscribe({
       next: (res) => {
         this.created.emit(res);
         this.close.emit();

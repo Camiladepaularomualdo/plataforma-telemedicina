@@ -23,9 +23,11 @@ export class AppointmentFormComponent implements OnInit {
   }
 
   loadPatients() {
-    this.http.get<any[]>(`${environment.apiUrl}/patients`).subscribe(data => {
-      this.patients = data;
-    });
+    if (this.doctorId) {
+      this.http.get<any[]>(`${environment.apiUrl}/patients/doctor/${this.doctorId}`).subscribe(data => {
+        this.patients = data;
+      });
+    }
   }
 
   save() {

@@ -23,6 +23,13 @@ public class PatientsController : ControllerBase
         return Ok(patients);
     }
 
+    [HttpGet("doctor/{doctorId}")]
+    public async Task<IActionResult> GetByDoctorId(int doctorId)
+    {
+        var patients = await _patientService.GetByDoctorIdAsync(doctorId);
+        return Ok(patients);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {

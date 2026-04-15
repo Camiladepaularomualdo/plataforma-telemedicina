@@ -9,4 +9,5 @@ public interface IPatientService
     Task<Patient> RegisterAsync(Patient patient);
     Task<Patient?> GetByIdAsync(int id);
     Task<IEnumerable<Patient>> GetAllAsync();
+    Task<IEnumerable<Patient>> GetByDoctorIdAsync(int doctorId);
 }

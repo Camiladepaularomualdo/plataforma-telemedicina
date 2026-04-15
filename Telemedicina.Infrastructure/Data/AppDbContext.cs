@@ -18,5 +18,11 @@ public class AppDbContext : DbContext
         // Additional configurations (Fluent API) if necessary.
         modelBuilder.Entity<Doctor>().HasIndex(d => d.Cpf).IsUnique();
         modelBuilder.Entity<Patient>().HasIndex(p => p.Cpf).IsUnique();
+
+        modelBuilder.Entity<Patient>()
+            .HasOne(p => p.Doctor)
+            .WithMany()
+            .HasForeignKey(p => p.DoctorId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

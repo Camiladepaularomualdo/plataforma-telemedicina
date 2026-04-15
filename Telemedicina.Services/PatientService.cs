@@ -35,4 +35,9 @@ public class PatientService : IPatientService
     {
         return await _repository.GetAllAsync();
     }
+
+    public async Task<IEnumerable<Patient>> GetByDoctorIdAsync(int doctorId)
+    {
+        return await _repository.GetByDoctorIdAsync(doctorId);
+    }
 }
