@@ -44,34 +44,60 @@ export class PatientPopupComponent {
     }
   }
 
+  showConfirmModal = false;
+
   iniciarAtendimento() {
-    this.http.post(`${environment.apiUrl}/appointments/${this.appointment.id}/generate-meeting`, {}).subscribe({
-      next: (res: any) => {
-        this.appointment.meetingUrl = res.meetingUrl;
-        this.statusChanged.emit();
-        this.creditService.decrementLocalCredit();
-        
-        // Show success toast
-        this.showCreditToast();
-      },
-      error: (err) => {
-        console.error('Failed to generate meeting URL', err);
-        let errMsg = 'Erro ao gerar URL da consulta.';
-        if (err.error instanceof ErrorEvent) {
-          errMsg = err.error.message;
-        } else if (typeof err.error === 'string') {
-          errMsg = err.error;
-        } else if (err.error && err.error.message) {
-          errMsg = err.error.message;
-        } else if (err.error && err.error.text) {
-          errMsg = err.error.text;
-        } else if (err.error && typeof err.error === 'object') {
-           // Em caso de erro do Http, se não encontrar 'message' no 'error', mostre a mensagem raiz do HttpErrorResponse
-           errMsg = err.message || errMsg;
+    this.showConfirmModal = true;
+  }
+
+  handleConfirm(markAsAttended: boolean) {
+    this.showConfirmModal = false;
+
+    const doGenerate = () => {
+      this.http.post(`${environment.apiUrl}/appointments/${this.appointment.id}/generate-meeting`, {}).subscribe({
+        next: (res: any) => {
+          this.appointment.meetingUrl = res.meetingUrl;
+          this.statusChanged.emit();
+          this.creditService.decrementLocalCredit();
+          
+          // Show success toast
+          this.showCreditToast();
+        },
+        error: (err) => {
+          console.error('Failed to generate meeting URL', err);
+          let errMsg = 'Erro ao gerar URL da consulta.';
+          if (err.error instanceof ErrorEvent) {
+            errMsg = err.error.message;
+          } else if (typeof err.error === 'string') {
+            errMsg = err.error;
+          } else if (err.error && err.error.message) {
+            errMsg = err.error.message;
+          } else if (err.error && err.error.text) {
+            errMsg = err.error.text;
+          } else if (err.error && typeof err.error === 'object') {
+             // Em caso de erro do Http, se não encontrar 'message' no 'error', mostre a mensagem raiz do HttpErrorResponse
+             errMsg = err.message || errMsg;
+          }
+          alert(errMsg);
         }
-        alert(errMsg);
-      }
-    });
+      });
+    };
+
+    if (markAsAttended) {
+      this.http.patch(`${environment.apiUrl}/appointments/${this.appointment.id}/status/2`, {}).subscribe({
+        next: () => {
+          this.appointment.status = 2; // Atendido
+          this.statusChanged.emit();
+          doGenerate();
+        },
+        error: (err) => {
+          console.error('Failed to update status', err);
+          doGenerate();
+        }
+      });
+    } else {
+      doGenerate();
+    }
   }
 
   toastMessage = '';

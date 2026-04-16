@@ -315,3 +315,47 @@
         opacity: 0;
     }
 }
+
+/* Confirm Modal Styles */
+.confirm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+}
+
+.confirm-modal-content {
+    width: 90%;
+    max-width: 450px;
+    background-color: var(--surface, #ffffff);
+    border-radius: 12px;
+    padding: 2rem;
+    box-sizing: border-box;
+    animation: zoomIn 0.2s ease-out;
+    text-align: center;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.confirm-modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}

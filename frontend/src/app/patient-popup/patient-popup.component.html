@@ -82,7 +82,7 @@
                             </div>
                             <div class="meeting-url-body">
                                 <div class="url-badge">
-                                    <span class="url-text">clinfy...</span>
+                                    <span class="url-text" [title]="appointment.meetingUrl">{{ appointment.meetingUrl }}</span>
                                     <div class="url-badge-actions">
                                         <button class="icon-btn email-btn" (click)="enviarPorEmail()"
                                             [disabled]="isSendingEmail" title="Enviar por Email">
@@ -123,6 +123,23 @@
     <div class="toast-content">
         <i class="fa fa-check-circle"></i>
         <span>{{ toastMessage }}</span>
+    </div>
+</div>
+
+<div class="confirm-modal-overlay" *ngIf="showConfirmModal" (click)="showConfirmModal = false">
+    <div class="confirm-modal-content card" (click)="$event.stopPropagation()">
+        <div class="modal-header" style="justify-content: center; border-bottom: none; margin-bottom: 0.5rem; padding-bottom: 0;">
+            <h3 style="color: var(--primary-dark);">Deseja marcar como atendido?</h3>
+        </div>
+        <div class="modal-body">
+            <p style="color: var(--text-dark); margin-bottom: 1.5rem;">
+                Você pode optar por marcar este agendamento com o status de "Atendido" antes de gerar o link da sala.
+            </p>
+            <div class="confirm-modal-actions">
+                <button class="secondary" (click)="handleConfirm(false)">Apenas gerar link</button>
+                <button class="primary" (click)="handleConfirm(true)">Marcar e gerar link</button>
+            </div>
+        </div>
     </div>
 </div>
 
