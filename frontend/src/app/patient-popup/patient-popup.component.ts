@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { CreditService } from '../credit.service';
 
 @Component({
   selector: 'app-patient-popup',
@@ -12,7 +13,7 @@ export class PatientPopupComponent {
   @Output() close = new EventEmitter<void>();
   @Output() statusChanged = new EventEmitter<void>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private creditService: CreditService) { }
 
   closePopup() {
     this.close.emit();
@@ -44,17 +45,32 @@ export class PatientPopupComponent {
   }
 
   iniciarAtendimento() {
-    //alert(`${environment.apiUrl}/appointments/${this.appointment.id}/generate-meeting`);
     this.http.post(`${environment.apiUrl}/appointments/${this.appointment.id}/generate-meeting`, {}).subscribe({
       next: (res: any) => {
         this.appointment.meetingUrl = res.meetingUrl;
         this.statusChanged.emit();
+        this.creditService.decrementLocalCredit();
+        
+        // Show success toast
+        this.showCreditToast();
       },
       error: (err) => {
         console.error('Failed to generate meeting URL', err);
-        alert('Erro ao gerar URL da consulta. Verifique se a API Key do Whereby está configurada.');
+        const errMsg = err.error ? err.error : 'Erro ao gerar URL da consulta.';
+        alert(errMsg);
       }
     });
+  }
+
+  toastMessage = '';
+  showToast = false;
+
+  showCreditToast() {
+    this.toastMessage = '1 crédito utilizado com sucesso';
+    this.showToast = true;
+    setTimeout(() => {
+        this.showToast = false;
+    }, 3000);
   }
 
   copyUrl() {

@@ -1,0 +1,41 @@
+<div class="popup-overlay" (click)="onClose()">
+    <div class="popup-content" (click)="$event.stopPropagation()">
+        <header class="popup-header">
+            <h3>Extrato de Uso de Créditos</h3>
+            <button class="close-btn" (click)="onClose()">&times;</button>
+        </header>
+
+        <div class="popup-body">
+            <div class="loading" *ngIf="loading">Carregando extrato...</div>
+
+            <div class="empty-state" *ngIf="!loading && transactions.length === 0">
+                <p>Nenhuma transação encontrada no momento.</p>
+            </div>
+
+            <div class="timeline" *ngIf="!loading && transactions.length > 0">
+                <div class="timeline-item" *ngFor="let t of transactions">
+                    <div class="item-icon" [ngClass]="{'negative': t.amount < 0, 'positive': t.amount > 0}">
+                        <i class="fa fa-arrow-down" *ngIf="t.amount < 0"></i>
+                        <i class="fa fa-arrow-up" *ngIf="t.amount > 0"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <span class="patient-name">{{ t.patientName || 'N/A' }}</span>
+                            <span class="amount" [ngClass]="{'negative-txt': t.amount < 0}">
+                                {{ t.amount }} Crédito(s)
+                            </span>
+                        </div>
+                        <div class="item-details">
+                            <span class="date"><i class="fa fa-calendar"></i> {{ formatDate(t.appointmentDate) }}</span>
+                            <span class="time"><i class="fa fa-clock-o"></i> {{ formatTime(t.appointmentTime) }}</span>
+                        </div>
+                        <div class="item-desc">
+                            <small>{{ t.description }}</small>
+                            <small class="tx-date">Data da Transação: {{ t.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -14,6 +14,7 @@ import { AppointmentsListComponent } from './appointments-list/appointments-list
 import { EmailConfigPopupComponent } from './email-config-popup/email-config-popup.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgChartsModule } from 'ng2-charts';
+import { CreditStatementPopupComponent } from './credit-statement-popup/credit-statement-popup.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { NgChartsModule } from 'ng2-charts';
     AppointmentFormComponent,
     AppointmentsListComponent,
     EmailConfigPopupComponent,
-    DashboardComponent
+    DashboardComponent,
+    CreditStatementPopupComponent
   ],
   imports: [
     BrowserModule,

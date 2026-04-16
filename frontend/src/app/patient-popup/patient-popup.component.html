@@ -119,6 +119,13 @@
     </div>
 </div>
 
+<div class="credit-toast" *ngIf="showToast">
+    <div class="toast-content">
+        <i class="fa fa-check-circle"></i>
+        <span>{{ toastMessage }}</span>
+    </div>
+</div>
+
 <app-email-config-popup *ngIf="showEmailConfig" [doctorId]="appointment.doctorId" (close)="showEmailConfig = false"
     (configSaved)="onConfigSaved()">
 </app-email-config-popup>

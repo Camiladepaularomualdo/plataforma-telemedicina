@@ -8,10 +8,14 @@ namespace Telemedicina.Services;
 public class AppointmentService : IAppointmentService
 {
     private readonly IAppointmentRepository _repository;
+    private readonly IDoctorRepository _doctorRepository;
+    private readonly IGenericRepository<CreditTransaction> _creditTransactionRepository;
 
-    public AppointmentService(IAppointmentRepository repository)
+    public AppointmentService(IAppointmentRepository repository, IDoctorRepository doctorRepository, IGenericRepository<CreditTransaction> creditTransactionRepository)
     {
         _repository = repository;
+        _doctorRepository = doctorRepository;
+        _creditTransactionRepository = creditTransactionRepository;
     }
 
     public async Task<Appointment> CreateAppointmentAsync(Appointment appointment)
@@ -52,6 +56,14 @@ public class AppointmentService : IAppointmentService
 
         if (!string.IsNullOrEmpty(appointment.MeetingUrl)) return appointment.MeetingUrl;
 
+        var doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorId);
+        if (doctor == null) return null;
+
+        if (doctor.Credits < 1)
+        {
+            throw new System.Exception("Doctor has insufficient credits to generate a new meeting URL.");
+        }
+
         using var client = new System.Net.Http.HttpClient();
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
 
@@ -70,7 +82,23 @@ public class AppointmentService : IAppointmentService
 
             appointment.MeetingUrl = roomUrl;
             _repository.Update(appointment);
+
+            // Deduct credits and log transaction
+            doctor.Credits -= 1;
+            _doctorRepository.Update(doctor);
+
+            var transaction = new CreditTransaction
+            {
+                DoctorId = doctor.Id,
+                AppointmentId = appointment.Id,
+                Amount = -1,
+                Description = "Geração de link de atendimento"
+            };
+            await _creditTransactionRepository.AddAsync(transaction);
+
             await _repository.SaveChangesAsync();
+            await _doctorRepository.SaveChangesAsync();
+            await _creditTransactionRepository.SaveChangesAsync();
 
             return roomUrl;
         }

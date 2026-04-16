@@ -15,4 +15,7 @@ public class Doctor
     // Email Integration Config
     public string? GmailAddress { get; set; }
     public string? GmailAppPassword { get; set; }
+
+    // User Credits system
+    public int Credits { get; set; } = 100;
 }

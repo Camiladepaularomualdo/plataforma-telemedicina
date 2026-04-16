@@ -4,7 +4,12 @@
             <div class="logo">
                 <h2>Clinfy-Atendimento-Online</h2>
             </div>
-            <div class="actions">
+            <div class="actions" style="display: flex; align-items: center;">
+                <div class="credits-badge" (click)="showCreditStatement = true" title="Ver Extrato de Créditos" style="cursor: pointer; margin-right: 1.5rem; display: flex; align-items: center; background: #e0f2fe; color: #0369a1; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; transition: background 0.3s;">
+                    <i class="fa fa-coins" style="margin-right: 0.5rem;"></i>
+                    <span *ngIf="(credits$ | async) !== null">{{ credits$ | async }} Créditos</span>
+                    <span *ngIf="(credits$ | async) === null">...</span>
+                </div>
                 <button class="secondary" style="margin-right:1rem;" routerLink="/appointments">
                     Ver Todos (Lista)
                 </button>
@@ -13,7 +18,7 @@
                 <button class="primary" style="margin-right:1rem;" (click)="showAppointmentForm = true">+
                     Agendamento</button>
                 <button class="secondary" style="margin-right:1rem;" routerLink="/dashboard" title="Dashboard">
-                    <i class="pi pi-chart-line"></i>
+                    <i class="fa fa-chart-line"></i>
                 </button>
                 <button class="secondary" (click)="logout()">Sair</button>
             </div>
@@ -68,3 +73,7 @@
 <app-appointment-form *ngIf="showAppointmentForm" [doctorId]="doctorId!" (close)="showAppointmentForm = false"
     (created)="onAppointmentCreated()">
 </app-appointment-form>
+
+<!-- Credit Statement Popup Component -->
+<app-credit-statement-popup *ngIf="showCreditStatement" [doctorId]="doctorId!" (close)="showCreditStatement = false">
+</app-credit-statement-popup>

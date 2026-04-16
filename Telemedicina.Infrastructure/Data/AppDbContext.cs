@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<Doctor> Doctors { get; set; } = null!;
     public DbSet<Patient> Patients { get; set; } = null!;
     public DbSet<Appointment> Appointments { get; set; } = null!;
+    public DbSet<CreditTransaction> CreditTransactions { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

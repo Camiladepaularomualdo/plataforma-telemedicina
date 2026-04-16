@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { CreditService } from '../credit.service';
 
 @Component({
   selector: 'app-agenda',
@@ -19,8 +20,11 @@ export class AgendaComponent implements OnInit {
 
   showPatientForm = false;
   showAppointmentForm = false;
+  showCreditStatement = false;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  credits$ = this.creditService.credits$;
+
+  constructor(private http: HttpClient, private router: Router, private creditService: CreditService) { }
 
   ngOnInit(): void {
     const id = localStorage.getItem('doctorId');
@@ -29,6 +33,7 @@ export class AgendaComponent implements OnInit {
       return;
     }
     this.doctorId = parseInt(id, 10);
+    this.creditService.updateCreditsForDoctor(this.doctorId);
     this.loadAppointments();
   }
 
