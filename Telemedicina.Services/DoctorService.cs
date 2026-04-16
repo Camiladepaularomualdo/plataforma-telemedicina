@@ -37,7 +37,7 @@ public class DoctorService : IDoctorService
         doctor.PasswordHash = ComputeHash(doctor.PasswordHash);
         
         // Initialize credit plans
-        doctor.PlanCredits = 100;
+        doctor.PlanCredits = 15;
         doctor.Credits = doctor.PlanCredits;
         doctor.LastRenewalDate = DateTime.UtcNow;
         

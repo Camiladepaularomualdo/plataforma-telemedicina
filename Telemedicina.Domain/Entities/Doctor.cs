@@ -17,10 +17,10 @@ public class Doctor
     public string? GmailAppPassword { get; set; }
 
     // User Credits system
-    public int Credits { get; set; } = 100;
+    public int Credits { get; set; } = 15;
     
     // Credit Renewal System
-    public int PlanCredits { get; set; } = 100;
+    public int PlanCredits { get; set; } = 15;
     public DateTime? LastRenewalDate { get; set; }
     public DateTime? NextRenewalDate { get; set; }
 }
