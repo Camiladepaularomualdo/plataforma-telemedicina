@@ -14,20 +14,30 @@ export interface CreditTransaction {
   appointmentTime?: string;
 }
 
+export interface BalanceDetails {
+  credits: number;
+  planCredits: number;
+  lastRenewalDate?: string;
+  nextRenewalDate?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CreditService {
   private apiUrl = `${environment.apiUrl}/credits`;
   private creditsSubject = new BehaviorSubject<number | null>(null);
+  private balanceDetailsSubject = new BehaviorSubject<BalanceDetails | null>(null);
 
   credits$ = this.creditsSubject.asObservable();
+  balanceDetails$ = this.balanceDetailsSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
   updateCreditsForDoctor(doctorId: number) {
-    this.http.get<{credits: number}>(`${this.apiUrl}/doctor/${doctorId}/balance`).subscribe(res => {
+    this.http.get<BalanceDetails>(`${this.apiUrl}/doctor/${doctorId}/balance`).subscribe(res => {
       this.creditsSubject.next(res.credits);
+      this.balanceDetailsSubject.next(res);
     });
   }
 

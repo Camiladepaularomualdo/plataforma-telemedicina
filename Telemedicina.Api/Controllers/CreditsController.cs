@@ -23,9 +23,13 @@ public class CreditsController : ControllerBase
         var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
         if (doctor == null) return NotFound("Doctor not found.");
 
-        return Ok(new { credits = doctor.Credits });
+        return Ok(new { 
+            credits = doctor.Credits,
+            planCredits = doctor.PlanCredits,
+            lastRenewalDate = doctor.LastRenewalDate,
+            nextRenewalDate = doctor.NextRenewalDate
+        });
     }
-
     [HttpGet("doctor/{doctorId}/statement")]
     public async Task<IActionResult> GetStatement(int doctorId)
     {

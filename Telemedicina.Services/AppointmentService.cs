@@ -61,7 +61,7 @@ public class AppointmentService : IAppointmentService
 
         if (doctor.Credits < 1)
         {
-            throw new System.Exception("Doctor has insufficient credits to generate a new meeting URL.");
+            throw new System.Exception("Crédito insuficiente para gerar uma url");
         }
 
         using var client = new System.Net.Http.HttpClient();

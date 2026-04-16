@@ -12,6 +12,7 @@ export class CreditStatementPopupComponent implements OnInit {
 
   transactions: CreditTransaction[] = [];
   loading = true;
+  balanceDetails$ = this.creditService.balanceDetails$;
 
   constructor(private creditService: CreditService) {}
 

@@ -67,7 +67,7 @@ public class AppointmentsController : ControllerBase
         }
         catch (System.Exception ex)
         {
-            return StatusCode(500, ex.Message);
+            return StatusCode(500, new { message = ex.Message });
         }
     }
 
@@ -93,7 +93,7 @@ public class AppointmentsController : ControllerBase
         }
         catch (System.Exception ex)
         {
-            return StatusCode(500, "Erro ao enviar email: " + ex.Message);
+            return StatusCode(500, new { message = "Erro ao enviar email: " + ex.Message });
         }
     }
 }

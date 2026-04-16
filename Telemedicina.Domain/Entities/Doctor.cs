@@ -18,4 +18,9 @@ public class Doctor
 
     // User Credits system
     public int Credits { get; set; } = 100;
+    
+    // Credit Renewal System
+    public int PlanCredits { get; set; } = 100;
+    public DateTime? LastRenewalDate { get; set; }
+    public DateTime? NextRenewalDate { get; set; }
 }

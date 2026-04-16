@@ -24,6 +24,9 @@ builder.Services.AddScoped<Telemedicina.Interfaces.IPatientService, Telemedicina
 builder.Services.AddScoped<Telemedicina.Interfaces.IAppointmentService, Telemedicina.Services.AppointmentService>();
 builder.Services.AddScoped<Telemedicina.Interfaces.IEmailService, Telemedicina.Services.EmailService>();
 
+// Register Background Services
+builder.Services.AddHostedService<Telemedicina.Api.Services.CreditRenewalBackgroundService>();
+
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {

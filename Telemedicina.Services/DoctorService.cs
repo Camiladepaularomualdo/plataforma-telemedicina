@@ -35,6 +35,15 @@ public class DoctorService : IDoctorService
         if (existing != null) throw new Exception("Email already registered");
 
         doctor.PasswordHash = ComputeHash(doctor.PasswordHash);
+        
+        // Initialize credit plans
+        doctor.PlanCredits = 100;
+        doctor.Credits = doctor.PlanCredits;
+        doctor.LastRenewalDate = DateTime.UtcNow;
+        
+        var now = DateTime.UtcNow;
+        doctor.NextRenewalDate = new DateTime(now.Year, now.Month, 1).AddMonths(1);
+
         await _repository.AddAsync(doctor);
         await _repository.SaveChangesAsync();
 

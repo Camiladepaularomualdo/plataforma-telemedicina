@@ -8,6 +8,21 @@
         <div class="popup-body">
             <div class="loading" *ngIf="loading">Carregando extrato...</div>
 
+            <div class="balance-info-card" *ngIf="!loading && (balanceDetails$ | async) as balance">
+                <div class="balance-item">
+                    <span>Saldo Atual</span>
+                    <strong>{{ balance.credits }} / {{ balance.planCredits }}</strong>
+                </div>
+                <div class="balance-item" *ngIf="balance.lastRenewalDate">
+                    <span>Última Renovação</span>
+                    <strong>{{ balance.lastRenewalDate | date:'dd/MM/yyyy' }}</strong>
+                </div>
+                <div class="balance-item" *ngIf="balance.nextRenewalDate">
+                    <span>Próxima Renovação</span>
+                    <strong>{{ balance.nextRenewalDate | date:'dd/MM/yyyy' }}</strong>
+                </div>
+            </div>
+
             <div class="empty-state" *ngIf="!loading && transactions.length === 0">
                 <p>Nenhuma transação encontrada no momento.</p>
             </div>
