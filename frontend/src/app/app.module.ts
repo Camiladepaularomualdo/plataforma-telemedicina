@@ -15,6 +15,7 @@ import { EmailConfigPopupComponent } from './email-config-popup/email-config-pop
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgChartsModule } from 'ng2-charts';
 import { CreditStatementPopupComponent } from './credit-statement-popup/credit-statement-popup.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { CreditStatementPopupComponent } from './credit-statement-popup/credit-s
     AppointmentsListComponent,
     EmailConfigPopupComponent,
     DashboardComponent,
-    CreditStatementPopupComponent
+    CreditStatementPopupComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
