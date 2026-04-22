@@ -76,6 +76,7 @@
                             <th>Pacientes</th>
                             <th>Consultas</th>
                             <th>Data de Cadastro</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -113,6 +114,11 @@
                                 </span>
                             </td>
                             <td class="date-cell">{{ formatDate(doc.createdAt) }}</td>
+                            <td>
+                                <button class="edit-credits-btn" (click)="openCreditPopup(doc)" title="Editar Plano de Créditos">
+                                    <i class="fa fa-pencil"></i> Editar
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -124,4 +130,80 @@
             </div>
         </div>
     </main>
+</div>
+
+<!-- Credit Plan Update Popup -->
+<div class="popup-overlay" *ngIf="showCreditPopup" (click)="closeCreditPopup()">
+    <div class="popup-container" (click)="$event.stopPropagation()">
+        <header class="popup-header">
+            <h3><i class="fa fa-coins"></i> Alterar Plano de Créditos</h3>
+            <button class="popup-close-btn" (click)="closeCreditPopup()">&times;</button>
+        </header>
+
+        <div class="popup-body" *ngIf="selectedDoctor">
+            <!-- Success State -->
+            <div class="popup-success" *ngIf="successMessage">
+                <i class="fa fa-check-circle"></i>
+                <p>{{ successMessage }}</p>
+            </div>
+
+            <!-- Form -->
+            <div *ngIf="!successMessage">
+                <div class="popup-doctor-info">
+                    <div class="popup-avatar">{{ selectedDoctor.name.charAt(0).toUpperCase() }}</div>
+                    <div>
+                        <div class="popup-doctor-name">{{ selectedDoctor.name }}</div>
+                        <div class="popup-doctor-email">{{ selectedDoctor.email }}</div>
+                    </div>
+                </div>
+
+                <div class="popup-current-plan">
+                    <div class="plan-item">
+                        <span class="plan-label">Plano Atual</span>
+                        <span class="plan-value">{{ selectedDoctor.planCredits }} créditos/mês</span>
+                    </div>
+                    <div class="plan-item">
+                        <span class="plan-label">Saldo Atual</span>
+                        <span class="plan-value">{{ selectedDoctor.credits }} créditos</span>
+                    </div>
+                </div>
+
+                <div class="popup-form-group">
+                    <label for="newCredits">Novo Plano de Créditos Mensais</label>
+                    <input id="newCredits" type="number" min="0" [(ngModel)]="newPlanCredits"
+                        placeholder="Quantidade de créditos" />
+                </div>
+
+                <div class="popup-warning">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Atenção:</strong> Ao alterar o plano, o saldo atual do médico será redefinido para o novo valor.
+                    </div>
+                </div>
+
+                <div class="popup-form-group confirm-group">
+                    <label for="confirmInput">
+                        Para confirmar, digite <strong>autorizo</strong> no campo abaixo:
+                    </label>
+                    <input id="confirmInput" type="text" [(ngModel)]="confirmText"
+                        placeholder="Digite autorizo para confirmar"
+                        [class.valid]="isConfirmValid"
+                        autocomplete="off" />
+                </div>
+
+                <div class="popup-error" *ngIf="popupError">
+                    <i class="fa fa-times-circle"></i> {{ popupError }}
+                </div>
+
+                <div class="popup-actions">
+                    <button class="btn-cancel" (click)="closeCreditPopup()">Cancelar</button>
+                    <button class="btn-confirm" [disabled]="!isConfirmValid || saving || newPlanCredits === null"
+                        (click)="submitCreditUpdate()">
+                        <span *ngIf="!saving"><i class="fa fa-check"></i> Confirmar Alteração</span>
+                        <span *ngIf="saving"><i class="fa fa-spinner fa-spin"></i> Salvando...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

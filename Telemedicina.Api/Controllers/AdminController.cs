@@ -51,4 +51,36 @@ public class AdminController : ControllerBase
 
         return Ok(report);
     }
+
+    [HttpPatch("doctor/{doctorId}/update-plan")]
+    public async Task<IActionResult> UpdateDoctorPlan(int doctorId, [FromQuery] int requestingDoctorId, [FromBody] UpdatePlanRequest request)
+    {
+        // Validate admin privileges
+        var requestingDoctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == requestingDoctorId);
+        if (requestingDoctor == null)
+            return NotFound("Requesting doctor not found.");
+
+        if (requestingDoctor.Rule != "adm" && requestingDoctor.Rule != "all")
+            return StatusCode(403, "Acesso negado. Apenas administradores podem realizar esta ação.");
+
+        // Find target doctor
+        var targetDoctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
+        if (targetDoctor == null)
+            return NotFound("Doctor not found.");
+
+        if (request.NewPlanCredits < 0)
+            return BadRequest("O plano de créditos não pode ser negativo.");
+
+        targetDoctor.PlanCredits = request.NewPlanCredits;
+        targetDoctor.Credits = request.NewPlanCredits;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Plano atualizado com sucesso.", planCredits = targetDoctor.PlanCredits, credits = targetDoctor.Credits });
+    }
+}
+
+public class UpdatePlanRequest
+{
+    public int NewPlanCredits { get; set; }
 }

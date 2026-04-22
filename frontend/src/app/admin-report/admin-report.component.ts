@@ -35,6 +35,15 @@ export class AdminReportComponent implements OnInit {
   totalAppointmentsAll = 0;
   totalPatientsAll = 0;
 
+  // Credit plan update popup
+  showCreditPopup = false;
+  selectedDoctor: DoctorReportItem | null = null;
+  newPlanCredits: number | null = null;
+  confirmText = '';
+  saving = false;
+  successMessage = '';
+  popupError = '';
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -138,5 +147,70 @@ export class AdminReportComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/agenda']);
+  }
+
+  // ===== Credit Plan Popup Methods =====
+
+  openCreditPopup(doctor: DoctorReportItem) {
+    this.selectedDoctor = doctor;
+    this.newPlanCredits = doctor.planCredits;
+    this.confirmText = '';
+    this.saving = false;
+    this.successMessage = '';
+    this.popupError = '';
+    this.showCreditPopup = true;
+  }
+
+  closeCreditPopup() {
+    this.showCreditPopup = false;
+    this.selectedDoctor = null;
+    this.confirmText = '';
+    this.popupError = '';
+    this.successMessage = '';
+  }
+
+  get isConfirmValid(): boolean {
+    return this.confirmText.trim().toLowerCase() === 'autorizo';
+  }
+
+  submitCreditUpdate() {
+    if (!this.selectedDoctor || !this.isConfirmValid || this.newPlanCredits === null) return;
+
+    if (this.newPlanCredits < 0) {
+      this.popupError = 'O valor não pode ser negativo.';
+      return;
+    }
+
+    const requestingDoctorId = localStorage.getItem('doctorId');
+    if (!requestingDoctorId) return;
+
+    this.saving = true;
+    this.popupError = '';
+    this.successMessage = '';
+
+    this.http
+      .patch<any>(
+        `${environment.apiUrl}/admin/doctor/${this.selectedDoctor.id}/update-plan?requestingDoctorId=${requestingDoctorId}`,
+        { newPlanCredits: this.newPlanCredits }
+      )
+      .subscribe({
+        next: (res) => {
+          this.saving = false;
+          this.successMessage = `Plano de ${this.selectedDoctor!.name} atualizado para ${res.planCredits} créditos!`;
+          // Update local data
+          const doc = this.doctors.find(d => d.id === this.selectedDoctor!.id);
+          if (doc) {
+            doc.planCredits = res.planCredits;
+            doc.credits = res.credits;
+          }
+          this.calculateTotals();
+          // Auto close after 2s
+          setTimeout(() => this.closeCreditPopup(), 2000);
+        },
+        error: (err) => {
+          this.saving = false;
+          this.popupError = err.error?.message || err.error || 'Erro ao atualizar plano.';
+        }
+      });
   }
 }
