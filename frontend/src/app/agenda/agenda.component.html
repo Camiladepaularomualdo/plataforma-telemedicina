@@ -5,19 +5,19 @@
                 <h2>Clinfy-Atendimento-Online</h2>
             </div>
             <div class="actions" style="display: flex; align-items: center;">
-                <div class="credits-badge" (click)="showCreditStatement = true" title="Ver Extrato de Créditos" style="cursor: pointer; margin-right: 1.5rem; display: flex; align-items: center; background: #e0f2fe; color: #0369a1; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; transition: background 0.3s;">
+                <div *ngIf="canAccessAttendance" class="credits-badge" (click)="showCreditStatement = true" title="Ver Extrato de Créditos" style="cursor: pointer; margin-right: 1.5rem; display: flex; align-items: center; background: #e0f2fe; color: #0369a1; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; transition: background 0.3s;">
                     <i class="fa fa-coins" style="margin-right: 0.5rem;"></i>
                     <span *ngIf="(credits$ | async) !== null">{{ credits$ | async }} Créditos</span>
                     <span *ngIf="(credits$ | async) === null">...</span>
                 </div>
-                <button class="secondary" style="margin-right:1rem;" routerLink="/appointments">
+                <button *ngIf="canAccessAttendance" class="secondary" style="margin-right:1rem;" routerLink="/appointments">
                     Ver Todos (Lista)
                 </button>
-                <button class="primary" style="margin-right:0.5rem;" (click)="showPatientForm = true">+
+                <button *ngIf="canAccessAttendance" class="primary" style="margin-right:0.5rem;" (click)="showPatientForm = true">+
                     Paciente</button>
-                <button class="primary" style="margin-right:1rem;" (click)="showAppointmentForm = true">+
+                <button *ngIf="canAccessAttendance" class="primary" style="margin-right:1rem;" (click)="showAppointmentForm = true">+
                     Agendamento</button>
-                <button class="secondary" style="margin-right:1rem; display: inline-flex; align-items: center; gap: 6px;" routerLink="/dashboard" title="Acessar Métricas">
+                <button *ngIf="canAccessAdmin" class="secondary" style="margin-right:1rem; display: inline-flex; align-items: center; gap: 6px;" routerLink="/dashboard" title="Acessar Métricas">
                     <i class="fa fa-chart-pie" style="color: #8b5cf6;"></i> Dashboard
                 </button>
                 <button class="secondary" style="display: inline-flex; align-items: center; gap: 6px; color: #ef4444; border: 1px solid #f87171; background-color: #fef2f2;" (click)="logout()" title="Sair do Sistema">

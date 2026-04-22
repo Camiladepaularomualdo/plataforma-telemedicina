@@ -23,4 +23,7 @@ public class Doctor
     public int PlanCredits { get; set; } = 15;
     public DateTime? LastRenewalDate { get; set; }
     public DateTime? NextRenewalDate { get; set; }
+
+    // Role-Based Access Control (adm, usr, all)
+    public string Rule { get; set; } = "usr";
 }

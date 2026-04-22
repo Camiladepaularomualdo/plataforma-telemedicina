@@ -25,5 +25,9 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(p => p.DoctorId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Doctor>()
+            .Property(d => d.Rule)
+            .HasDefaultValue("usr");
     }
 }

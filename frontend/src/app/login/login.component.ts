@@ -44,6 +44,7 @@ export class LoginComponent {
     this.http.post<any>(`${environment.apiUrl}/auth/login`, payload).subscribe({
       next: (res) => {
         localStorage.setItem('doctorId', res.id);
+        localStorage.setItem('doctorRule', res.rule || 'usr');
         this.router.navigate(['/agenda']);
       },
       error: (err) => {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { CreditService } from '../credit.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-agenda',
@@ -24,7 +25,11 @@ export class AgendaComponent implements OnInit {
 
   credits$ = this.creditService.credits$;
 
-  constructor(private http: HttpClient, private router: Router, private creditService: CreditService) { }
+  // Role-based access flags
+  canAccessAttendance = false;
+  canAccessAdmin = false;
+
+  constructor(private http: HttpClient, private router: Router, private creditService: CreditService, private authService: AuthService) { }
 
   ngOnInit(): void {
     const id = localStorage.getItem('doctorId');
@@ -33,6 +38,11 @@ export class AgendaComponent implements OnInit {
       return;
     }
     this.doctorId = parseInt(id, 10);
+
+    // Set role-based permissions
+    this.canAccessAttendance = this.authService.canAccessAttendance();
+    this.canAccessAdmin = this.authService.canAccessAdmin();
+
     this.creditService.updateCreditsForDoctor(this.doctorId);
     this.loadAppointments();
   }
@@ -156,7 +166,7 @@ export class AgendaComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('doctorId');
+    this.authService.clearAuth();
     this.router.navigate(['/login']);
   }
 }

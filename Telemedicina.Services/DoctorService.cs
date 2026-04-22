@@ -44,6 +44,9 @@ public class DoctorService : IDoctorService
         var now = DateTime.UtcNow;
         doctor.NextRenewalDate = new DateTime(now.Year, now.Month, 1).AddMonths(1);
 
+        // Force default role for new registrations
+        doctor.Rule = "usr";
+
         await _repository.AddAsync(doctor);
         await _repository.SaveChangesAsync();
 
