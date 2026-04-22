@@ -6,6 +6,7 @@ import { AppointmentsListComponent } from './appointments-list/appointments-list
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { FaqComponent } from './faq/faq.component';
+import { AdminReportComponent } from './admin-report/admin-report.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'agenda', component: AgendaComponent },
   { path: 'appointments', component: AppointmentsListComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'faq', component: FaqComponent }
+  { path: 'faq', component: FaqComponent },
+  { path: 'admin-report', component: AdminReportComponent }
 ];
 
 @NgModule({

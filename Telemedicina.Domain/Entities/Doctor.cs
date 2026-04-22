@@ -26,4 +26,7 @@ public class Doctor
 
     // Role-Based Access Control (adm, usr, all)
     public string Rule { get; set; } = "usr";
+
+    // Registration timestamp
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

@@ -17,6 +17,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { CreditStatementPopupComponent } from './credit-statement-popup/credit-statement-popup.component';
 import { HomeComponent } from './home/home.component';
 import { FaqComponent } from './faq/faq.component';
+import { AdminReportComponent } from './admin-report/admin-report.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { FaqComponent } from './faq/faq.component';
     DashboardComponent,
     CreditStatementPopupComponent,
     HomeComponent,
-    FaqComponent
+    FaqComponent,
+    AdminReportComponent
   ],
   imports: [
     BrowserModule,

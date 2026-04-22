@@ -1,0 +1,127 @@
+<div class="report-layout">
+    <header class="report-header">
+        <div class="header-content container">
+            <div class="header-left">
+                <button class="back-btn" (click)="goBack()">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </button>
+                <h1><i class="fa fa-file-text-o"></i> Relatório de Médicos</h1>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fa fa-search"></i>
+                    <input type="text" placeholder="Buscar por nome ou email..." [(ngModel)]="searchTerm"
+                        (input)="onSearch()" />
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container report-main">
+        <!-- Summary Cards -->
+        <div class="summary-cards" *ngIf="!loading && !errorMessage">
+            <div class="summary-card card-doctors">
+                <div class="card-icon"><i class="fa fa-user-md"></i></div>
+                <div class="card-info">
+                    <span class="card-value">{{ totalDoctors }}</span>
+                    <span class="card-label">Médicos Cadastrados</span>
+                </div>
+            </div>
+            <div class="summary-card card-credits">
+                <div class="card-icon"><i class="fa fa-coins"></i></div>
+                <div class="card-info">
+                    <span class="card-value">{{ totalCreditsUsedAll }}</span>
+                    <span class="card-label">Créditos Utilizados</span>
+                </div>
+            </div>
+            <div class="summary-card card-appointments">
+                <div class="card-icon"><i class="fa fa-calendar-check-o"></i></div>
+                <div class="card-info">
+                    <span class="card-value">{{ totalAppointmentsAll }}</span>
+                    <span class="card-label">Total de Consultas</span>
+                </div>
+            </div>
+            <div class="summary-card card-patients">
+                <div class="card-icon"><i class="fa fa-users"></i></div>
+                <div class="card-info">
+                    <span class="card-value">{{ totalPatientsAll }}</span>
+                    <span class="card-label">Total de Pacientes</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" *ngIf="loading">
+            <div class="spinner"></div>
+            <p>Carregando relatório...</p>
+        </div>
+
+        <!-- Error State -->
+        <div class="error-state" *ngIf="!loading && errorMessage">
+            <i class="fa fa-exclamation-triangle"></i>
+            <p>{{ errorMessage }}</p>
+            <button class="retry-btn" (click)="loadReport()">Tentar novamente</button>
+        </div>
+
+        <!-- Report Table -->
+        <div class="table-card" *ngIf="!loading && !errorMessage">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Médico</th>
+                            <th>Perfil</th>
+                            <th>Saldo de Créditos</th>
+                            <th>Créditos Utilizados</th>
+                            <th>Pacientes</th>
+                            <th>Consultas</th>
+                            <th>Data de Cadastro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let doc of filteredDoctors">
+                            <td class="doctor-cell">
+                                <div class="doctor-avatar">{{ doc.name.charAt(0).toUpperCase() }}</div>
+                                <div class="doctor-info">
+                                    <span class="doctor-name">{{ doc.name }}</span>
+                                    <span class="doctor-email">{{ doc.email }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="role-badge" [ngClass]="getRoleBadgeClass(doc.rule)">
+                                    {{ getRoleLabel(doc.rule) }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="credits-display">
+                                    <span class="credits-current">{{ doc.credits }}</span>
+                                    <span class="credits-separator">/</span>
+                                    <span class="credits-plan">{{ doc.planCredits }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="used-credits">{{ doc.totalCreditsUsed }}</span>
+                            </td>
+                            <td>
+                                <span class="stat-badge patients-badge">
+                                    <i class="fa fa-users"></i> {{ doc.totalPatients }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="stat-badge appointments-badge">
+                                    <i class="fa fa-calendar"></i> {{ doc.totalAppointments }}
+                                </span>
+                            </td>
+                            <td class="date-cell">{{ formatDate(doc.createdAt) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="empty-table" *ngIf="filteredDoctors.length === 0">
+                <i class="fa fa-search"></i>
+                <p>Nenhum médico encontrado para "{{ searchTerm }}"</p>
+            </div>
+        </div>
+    </main>
+</div>

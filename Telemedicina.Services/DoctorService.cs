@@ -47,6 +47,9 @@ public class DoctorService : IDoctorService
         // Force default role for new registrations
         doctor.Rule = "usr";
 
+        // Set registration timestamp
+        doctor.CreatedAt = DateTime.UtcNow;
+
         await _repository.AddAsync(doctor);
         await _repository.SaveChangesAsync();
 

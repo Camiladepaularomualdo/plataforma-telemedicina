@@ -20,6 +20,9 @@
                 <button *ngIf="canAccessAdmin" class="secondary" style="margin-right:1rem; display: inline-flex; align-items: center; gap: 6px;" routerLink="/dashboard" title="Acessar Métricas">
                     <i class="fa fa-chart-pie" style="color: #8b5cf6;"></i> Dashboard
                 </button>
+                <button *ngIf="canAccessAdmin" class="secondary" style="margin-right:1rem; display: inline-flex; align-items: center; gap: 6px;" routerLink="/admin-report" title="Relatório de Médicos">
+                    <i class="fa fa-file-text-o" style="color: #0ea5e9;"></i> Relatório
+                </button>
                 <button class="secondary" style="display: inline-flex; align-items: center; gap: 6px; color: #ef4444; border: 1px solid #f87171; background-color: #fef2f2;" (click)="logout()" title="Sair do Sistema">
                     <i class="fa fa-times"></i> Sair
                 </button>

@@ -29,5 +29,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Doctor>()
             .Property(d => d.Rule)
             .HasDefaultValue("usr");
+
+        modelBuilder.Entity<Doctor>()
+            .Property(d => d.CreatedAt)
+            .HasDefaultValueSql("GETUTCDATE()");
     }
 }
