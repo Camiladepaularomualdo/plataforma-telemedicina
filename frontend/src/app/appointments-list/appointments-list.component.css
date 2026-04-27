@@ -137,3 +137,27 @@
     background-color: #fee2e2;
     color: #b91c1c;
 }
+
+/* Responsividade Appointments List */
+@media (max-width: 900px) {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .actions {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .actions button {
+        width: 100%;
+        margin-right: 0 !important;
+    }
+
+    .filter-group {
+        min-width: 100%;
+    }
+}

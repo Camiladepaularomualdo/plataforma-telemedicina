@@ -20,6 +20,8 @@
     padding: 2rem;
     box-sizing: border-box;
     animation: slideIn 0.2s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 @keyframes slideIn {

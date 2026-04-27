@@ -48,7 +48,11 @@ export class AgendaComponent implements OnInit {
   }
 
   get monthName(): string {
-    return this.currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
+    return this.currentDate.toLocaleString('pt-BR', { month: 'long' });
+  }
+
+  get year(): number {
+    return this.currentDate.getFullYear();
   }
 
   previousMonth() {
@@ -111,6 +115,7 @@ export class AgendaComponent implements OnInit {
       currentWeek.push({
         day: day,
         date: dateObj,
+        weekDayName: this.weekDays[dateObj.getDay()],
         appointments: dayApts
       });
 

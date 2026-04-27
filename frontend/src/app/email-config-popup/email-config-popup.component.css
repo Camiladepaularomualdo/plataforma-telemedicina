@@ -112,3 +112,12 @@
     margin-bottom: 1rem;
     font-size: 0.9rem;
 }
+
+/* Responsividade Modais */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}

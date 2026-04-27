@@ -79,3 +79,28 @@ label {
     font-size: 0.9rem;
     text-align: center;
 }
+
+/* Responsividade Login */
+@media (max-width: 768px) {
+    .login-card {
+        padding: 2rem 1.5rem;
+        border-radius: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .col {
+        margin-bottom: 1.5rem;
+    }
+    
+    .col:last-child {
+        margin-bottom: 0;
+    }
+}

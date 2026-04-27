@@ -83,3 +83,36 @@
     color: #666;
     font-size: 1.1rem;
 }
+
+/* Responsividade Dashboard */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 15px;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 20px;
+        align-items: stretch;
+        padding: 15px;
+    }
+
+    .month-selector {
+        justify-content: center;
+    }
+
+    .month-selector h2 {
+        width: auto;
+        flex: 1;
+        font-size: 1.2rem;
+    }
+
+    .chart-container {
+        padding: 15px;
+        height: 350px;
+    }
+    
+    .back-btn {
+        align-self: flex-start;
+    }
+}

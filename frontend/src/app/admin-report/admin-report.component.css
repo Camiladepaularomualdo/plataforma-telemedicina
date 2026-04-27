@@ -814,3 +814,15 @@ tbody td {
     cursor: not-allowed;
 }
 
+@media (max-width: 480px) {
+    .popup-current-plan {
+        flex-direction: column;
+    }
+    .popup-actions {
+        flex-direction: column;
+    }
+    .popup-actions button {
+        width: 100%;
+    }
+}
+

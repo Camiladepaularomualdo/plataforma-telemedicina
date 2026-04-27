@@ -97,3 +97,26 @@ label {
     font-size: 0.9rem;
     text-align: center;
 }
+
+/* Responsividade Modais */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 1.5rem !important;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .col {
+        margin-bottom: 1.5rem;
+    }
+    
+    .col:last-child {
+        margin-bottom: 0;
+    }
+}

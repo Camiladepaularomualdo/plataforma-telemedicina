@@ -92,6 +92,23 @@
   color: #4A90E2;
 }
 
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #4A90E2;
+  cursor: pointer;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+  gap: 30px;
+}
+
 .nav-links {
   display: flex;
   gap: 30px;
@@ -624,13 +641,54 @@ footer {
 
 /* Responsive Styles */
 @media (max-width: 900px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-top: 1px solid #E2E8F0;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .nav-menu.open {
+    display: flex;
+  }
+
+  .nav-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .nav-actions .btn {
+    width: 100%;
+    text-align: center;
+    margin-right: 0 !important;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 15px;
+  }
+
   .hero {
     flex-direction: column;
     text-align: center;
     padding: 60px 5%;
   }
 
-  .nav-links, .system-preview {
+  .system-preview {
     display: none;
   }
 

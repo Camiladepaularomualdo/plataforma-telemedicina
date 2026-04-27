@@ -34,7 +34,9 @@
         <div class="agenda-card card">
             <div class="month-selector">
                 <button class="secondary btn-icon" (click)="previousMonth()">&#8592;</button>
-                <h3 class="month-title">{{ monthName }}</h3>
+                <h3 class="month-title">
+                    <span class="month-text">{{ monthName }}</span><span class="year-text"> de {{ year }}</span>
+                </h3>
                 <button class="secondary btn-icon" (click)="nextMonth()">&#8594;</button>
             </div>
 
@@ -51,7 +53,10 @@
                 <div class="calendar-body">
                     <div class="calendar-week" *ngFor="let week of calendarWeeks">
                         <div class="calendar-day" *ngFor="let d of week" [class.empty-day]="!d">
-                            <div class="day-number" *ngIf="d">{{ d.day }}</div>
+                            <div class="day-number" *ngIf="d">
+                                <span class="mobile-weekday">{{ d.weekDayName }}, </span>
+                                {{ d.day }}
+                            </div>
                             <div class="day-appointments" *ngIf="d">
                                 <div class="apt-badge" *ngFor="let apt of d.appointments"
                                     [ngClass]="getStatusClass(apt.status)"

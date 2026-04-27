@@ -2,18 +2,24 @@
   <!-- Navbar / Header -->
   <header class="navbar">
     <div class="logo">Clinfy</div>
-    <div class="nav-links">
-      <a href="/home#benefits">Benefícios</a>
-      <a href="/home#credits">15 Créditos Grátis</a>
-    </div>
-    <div class="nav-actions">
-      <div class="system-preview">
-        <span class="credit-counter">
-          🪙 15 Créditos Iniciais
-        </span>
+    <button class="hamburger" (click)="toggleMenu()">
+      <i class="pi pi-bars" *ngIf="!isMenuOpen"></i>
+      <i class="pi pi-times" *ngIf="isMenuOpen"></i>
+    </button>
+    <div class="nav-menu" [class.open]="isMenuOpen">
+      <div class="nav-links">
+        <a href="/home#benefits" (click)="toggleMenu()">Benefícios</a>
+        <a href="/home#credits" (click)="toggleMenu()">15 Créditos Grátis</a>
       </div>
-      <a routerLink="/login" class="btn btn-outline" style="margin-right: 10px;">Entrar</a>
-      <a routerLink="/login" class="btn btn-primary">Começar grátis</a>
+      <div class="nav-actions">
+        <div class="system-preview">
+          <span class="credit-counter">
+            🪙 15 Créditos Iniciais
+          </span>
+        </div>
+        <a routerLink="/login" class="btn btn-outline" style="margin-right: 10px;">Entrar</a>
+        <a routerLink="/login" class="btn btn-primary">Começar grátis</a>
+      </div>
     </div>
   </header>
 

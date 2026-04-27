@@ -87,3 +87,27 @@ h1, h2, h3 {
   color: var(--text-dark);
   margin-bottom: 1rem;
 }
+
+/* Utilitários Responsivos Globais */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  .card {
+    padding: 1.5rem;
+  }
+  
+  button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  button:last-child {
+    margin-bottom: 0;
+  }
+}
