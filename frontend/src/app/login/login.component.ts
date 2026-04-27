@@ -48,7 +48,8 @@ export class LoginComponent {
         this.router.navigate(['/agenda']);
       },
       error: (err) => {
-        this.loginError = 'Invalid email or password';
+        // Exibe a mensagem de erro específica do backend se houver (ex: conta inativa), ou uma padrão
+        this.loginError = err.error || 'Email ou senha inválidos';
       }
     });
   }

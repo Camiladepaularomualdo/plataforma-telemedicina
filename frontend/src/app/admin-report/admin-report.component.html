@@ -63,6 +63,18 @@
             <button class="retry-btn" (click)="loadReport()">Tentar novamente</button>
         </div>
 
+        <!-- View Toggle -->
+        <div class="view-toggle-container" *ngIf="!loading && !errorMessage">
+            <div class="view-toggle">
+                <button [class.active]="viewMode === 'active'" (click)="setViewMode('active')">
+                    <i class="fa fa-check-circle"></i> Médicos Ativos
+                </button>
+                <button [class.active]="viewMode === 'inactive'" (click)="setViewMode('inactive')">
+                    <i class="fa fa-ban"></i> Inativos/Excluídos
+                </button>
+            </div>
+        </div>
+
         <!-- Report Table -->
         <div class="table-card" *ngIf="!loading && !errorMessage">
             <div class="table-wrapper">
@@ -115,9 +127,17 @@
                             </td>
                             <td class="date-cell">{{ formatDate(doc.createdAt) }}</td>
                             <td>
-                                <button class="edit-credits-btn" (click)="openCreditPopup(doc)" title="Editar Plano de Créditos">
-                                    <i class="fa fa-pencil"></i> Editar
-                                </button>
+                                <div class="action-buttons">
+                                    <button class="edit-credits-btn" (click)="openCreditPopup(doc)" title="Editar Plano de Créditos">
+                                        <i class="fa fa-pencil"></i> Editar
+                                    </button>
+                                    <button *ngIf="!doc.isDeleted" class="delete-btn" (click)="openStatusPopup(doc, 'delete')" title="Excluir Médico">
+                                        <i class="fa fa-trash"></i> Excluir
+                                    </button>
+                                    <button *ngIf="doc.isDeleted" class="activate-btn" (click)="openStatusPopup(doc, 'activate')" title="Ativar Médico">
+                                        <i class="fa fa-refresh"></i> Ativar
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -207,3 +227,67 @@
         </div>
     </div>
 </div>
+
+<!-- Status Update Popup (Delete/Activate) -->
+<div class="popup-overlay" *ngIf="showStatusPopup" (click)="closeStatusPopup()">
+    <div class="popup-container" (click)="$event.stopPropagation()">
+        <header class="popup-header" [ngClass]="{'danger-header': statusAction === 'delete', 'success-header': statusAction === 'activate'}">
+            <h3 *ngIf="statusAction === 'delete'"><i class="fa fa-trash"></i> Excluir Médico</h3>
+            <h3 *ngIf="statusAction === 'activate'"><i class="fa fa-refresh"></i> Ativar Médico</h3>
+            <button class="popup-close-btn" (click)="closeStatusPopup()">&times;</button>
+        </header>
+
+        <div class="popup-body" *ngIf="selectedDoctor">
+            <!-- Success State -->
+            <div class="popup-success" *ngIf="successMessage">
+                <i class="fa fa-check-circle"></i>
+                <p>{{ successMessage }}</p>
+            </div>
+
+            <!-- Form -->
+            <div *ngIf="!successMessage">
+                <div class="popup-doctor-info">
+                    <div class="popup-avatar">{{ selectedDoctor.name.charAt(0).toUpperCase() }}</div>
+                    <div>
+                        <div class="popup-doctor-name">{{ selectedDoctor.name }}</div>
+                        <div class="popup-doctor-email">{{ selectedDoctor.email }}</div>
+                    </div>
+                </div>
+
+                <div class="popup-warning">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <div *ngIf="statusAction === 'delete'">
+                        <strong>Atenção:</strong> O médico será inativado e não poderá mais realizar login no sistema. Seus dados serão mantidos para histórico.
+                    </div>
+                    <div *ngIf="statusAction === 'activate'">
+                        <strong>Atenção:</strong> O médico será ativado e poderá voltar a utilizar o sistema normalmente.
+                    </div>
+                </div>
+
+                <div class="popup-form-group confirm-group">
+                    <label for="statusConfirmInput">
+                        Para confirmar, digite <strong>{{ statusAction === 'delete' ? 'excluir' : 'ativar' }}</strong> no campo abaixo:
+                    </label>
+                    <input id="statusConfirmInput" type="text" [(ngModel)]="statusConfirmText"
+                        placeholder="Digite {{ statusAction === 'delete' ? 'excluir' : 'ativar' }} para confirmar"
+                        [class.valid]="isStatusConfirmValid"
+                        autocomplete="off" />
+                </div>
+
+                <div class="popup-error" *ngIf="statusError">
+                    <i class="fa fa-times-circle"></i> {{ statusError }}
+                </div>
+
+                <div class="popup-actions">
+                    <button class="btn-cancel" (click)="closeStatusPopup()">Cancelar</button>
+                    <button class="btn-confirm" [disabled]="!isStatusConfirmValid || statusSaving"
+                        (click)="submitStatusUpdate()" [ngClass]="{'btn-danger': statusAction === 'delete', 'btn-success': statusAction === 'activate'}">
+                        <span *ngIf="!statusSaving"><i class="fa fa-check"></i> {{ statusAction === 'delete' ? 'Confirmar Exclusão' : 'Confirmar Ativação' }}</span>
+                        <span *ngIf="statusSaving"><i class="fa fa-spinner fa-spin"></i> Processando...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

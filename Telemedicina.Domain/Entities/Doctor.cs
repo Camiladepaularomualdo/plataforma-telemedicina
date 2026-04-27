@@ -29,4 +29,7 @@ public class Doctor
 
     // Registration timestamp
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    // Soft delete flag
+    public bool IsDeleted { get; set; } = false;
 }

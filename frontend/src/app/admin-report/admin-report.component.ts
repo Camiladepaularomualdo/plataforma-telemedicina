@@ -15,6 +15,7 @@ export interface DoctorReportItem {
   totalCreditsUsed: number;
   totalPatients: number;
   totalAppointments: number;
+  isDeleted: boolean;
 }
 
 @Component({
@@ -43,6 +44,14 @@ export class AdminReportComponent implements OnInit {
   saving = false;
   successMessage = '';
   popupError = '';
+
+  // Status toggle
+  viewMode: 'active' | 'inactive' = 'active';
+  showStatusPopup = false;
+  statusAction: 'activate' | 'delete' = 'delete';
+  statusConfirmText = '';
+  statusSaving = false;
+  statusError = '';
 
   constructor(
     private http: HttpClient,
@@ -76,7 +85,7 @@ export class AdminReportComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.doctors = data;
-          this.filteredDoctors = data;
+          this.filterDoctors();
           this.calculateTotals();
           this.loading = false;
         },
@@ -104,17 +113,34 @@ export class AdminReportComponent implements OnInit {
     );
   }
 
-  onSearch() {
-    const term = this.searchTerm.toLowerCase().trim();
-    if (!term) {
-      this.filteredDoctors = this.doctors;
+  setViewMode(mode: 'active' | 'inactive') {
+    this.viewMode = mode;
+    this.filterDoctors();
+  }
+
+  filterDoctors() {
+    let filtered = this.doctors;
+    
+    if (this.viewMode === 'active') {
+      filtered = filtered.filter(d => !d.isDeleted);
     } else {
-      this.filteredDoctors = this.doctors.filter(
+      filtered = filtered.filter(d => d.isDeleted);
+    }
+
+    const term = this.searchTerm.toLowerCase().trim();
+    if (term) {
+      filtered = filtered.filter(
         (d) =>
           d.name.toLowerCase().includes(term) ||
           d.email.toLowerCase().includes(term)
       );
     }
+    
+    this.filteredDoctors = filtered;
+  }
+
+  onSearch() {
+    this.filterDoctors();
   }
 
   formatDate(date: string): string {
@@ -210,6 +236,76 @@ export class AdminReportComponent implements OnInit {
         error: (err) => {
           this.saving = false;
           this.popupError = err.error?.message || err.error || 'Erro ao atualizar plano.';
+        }
+      });
+  }
+
+  // ===== Status Popup Methods =====
+
+  openStatusPopup(doctor: DoctorReportItem, action: 'activate' | 'delete') {
+    this.selectedDoctor = doctor;
+    this.statusAction = action;
+    this.showStatusPopup = true;
+    this.statusConfirmText = '';
+    this.statusSaving = false;
+    this.statusError = '';
+    this.successMessage = '';
+  }
+
+  closeStatusPopup() {
+    this.showStatusPopup = false;
+    this.selectedDoctor = null;
+    this.statusConfirmText = '';
+    this.statusError = '';
+  }
+
+  get isStatusConfirmValid(): boolean {
+    const term = this.statusConfirmText.trim().toLowerCase();
+    if (this.statusAction === 'delete') {
+      return term === 'excluir';
+    } else {
+      return term === 'ativar';
+    }
+  }
+
+  submitStatusUpdate() {
+    if (!this.selectedDoctor || !this.isStatusConfirmValid) return;
+
+    const requestingDoctorId = localStorage.getItem('doctorId');
+    if (!requestingDoctorId) return;
+
+    this.statusSaving = true;
+    this.statusError = '';
+    this.successMessage = '';
+
+    const payload = { isDeleted: this.statusAction === 'delete' };
+
+    this.http
+      .patch<any>(
+        `${environment.apiUrl}/admin/doctor/${this.selectedDoctor.id}/toggle-status?requestingDoctorId=${requestingDoctorId}`,
+        payload
+      )
+      .subscribe({
+        next: (res) => {
+          this.statusSaving = false;
+          this.successMessage = res.message || 'Status atualizado com sucesso!';
+          
+          const doc = this.doctors.find(d => d.id === this.selectedDoctor!.id);
+          if (doc) {
+            doc.isDeleted = res.isDeleted;
+          }
+          
+          this.filterDoctors();
+          this.calculateTotals();
+          
+          setTimeout(() => {
+            this.closeStatusPopup();
+            this.successMessage = '';
+          }, 2000);
+        },
+        error: (err) => {
+          this.statusSaving = false;
+          this.statusError = err.error?.message || err.error || 'Erro ao alterar status do médico.';
         }
       });
   }

@@ -38,6 +38,7 @@ public class AdminController : ControllerBase
                 d.PlanCredits,
                 d.CreatedAt,
                 d.Rule,
+                d.IsDeleted,
                 TotalCreditsUsed = _context.CreditTransactions
                     .Where(t => t.DoctorId == d.Id && t.Amount < 0)
                     .Sum(t => t.Amount) * -1,
@@ -78,9 +79,39 @@ public class AdminController : ControllerBase
 
         return Ok(new { message = "Plano atualizado com sucesso.", planCredits = targetDoctor.PlanCredits, credits = targetDoctor.Credits });
     }
+    [HttpPatch("doctor/{doctorId}/toggle-status")]
+    public async Task<IActionResult> ToggleDoctorStatus(int doctorId, [FromQuery] int requestingDoctorId, [FromBody] ToggleStatusRequest request)
+    {
+        // Validate admin privileges
+        var requestingDoctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == requestingDoctorId);
+        if (requestingDoctor == null)
+            return NotFound("Requesting doctor not found.");
+
+        if (requestingDoctor.Rule != "adm" && requestingDoctor.Rule != "all")
+            return StatusCode(403, "Acesso negado. Apenas administradores podem realizar esta ação.");
+
+        // Find target doctor
+        var targetDoctor = await _context.Doctors.FirstOrDefaultAsync(d => d.Id == doctorId);
+        if (targetDoctor == null)
+            return NotFound("Doctor not found.");
+
+        if (targetDoctor.Id == requestingDoctorId)
+            return BadRequest("Você não pode alterar o próprio status.");
+
+        targetDoctor.IsDeleted = request.IsDeleted;
+        await _context.SaveChangesAsync();
+
+        var message = request.IsDeleted ? "Médico excluído com sucesso." : "Médico ativado com sucesso.";
+        return Ok(new { message, isDeleted = targetDoctor.IsDeleted });
+    }
 }
 
 public class UpdatePlanRequest
 {
     public int NewPlanCredits { get; set; }
+}
+
+public class ToggleStatusRequest
+{
+    public bool IsDeleted { get; set; }
 }

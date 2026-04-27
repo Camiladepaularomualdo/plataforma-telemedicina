@@ -21,6 +21,8 @@ public class AuthController : ControllerBase
     {
         var doctor = await _doctorService.AuthenticateAsync(dto.Email, dto.Password);
         if (doctor == null) return Unauthorized("Invalid email or password");
+        if (doctor.IsDeleted) return Unauthorized("Conta inativa. Entre em contato com o suporte da Clinfy.");
+        
         return Ok(doctor);
     }
 
