@@ -7,11 +7,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { FaqComponent } from './faq/faq.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
+import { CadastroComponent } from './cadastro/cadastro.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'cadastro', component: CadastroComponent },
+  { path: 'register', redirectTo: 'cadastro', pathMatch: 'full' },
   { path: 'agenda', component: AgendaComponent },
   { path: 'appointments', component: AppointmentsListComponent },
   { path: 'dashboard', component: DashboardComponent },

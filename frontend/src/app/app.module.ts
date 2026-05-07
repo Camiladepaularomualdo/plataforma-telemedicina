@@ -18,6 +18,7 @@ import { CreditStatementPopupComponent } from './credit-statement-popup/credit-s
 import { HomeComponent } from './home/home.component';
 import { FaqComponent } from './faq/faq.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
+import { CadastroComponent } from './cadastro/cadastro.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AdminReportComponent } from './admin-report/admin-report.component';
     CreditStatementPopupComponent,
     HomeComponent,
     FaqComponent,
-    AdminReportComponent
+    AdminReportComponent,
+    CadastroComponent
   ],
   imports: [
     BrowserModule,
