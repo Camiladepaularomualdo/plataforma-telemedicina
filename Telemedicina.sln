@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telemedicina.Interfaces", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telemedicina.Services", "Telemedicina.Services\Telemedicina.Services.csproj", "{D5BEB622-0B24-40A6-A5D7-FDE3F4E157A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinifyMobile", "ClinifyMobile\ClinifyMobile.csproj", "{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{D5BEB622-0B24-40A6-A5D7-FDE3F4E157A6}.Release|x64.Build.0 = Release|Any CPU
 		{D5BEB622-0B24-40A6-A5D7-FDE3F4E157A6}.Release|x86.ActiveCfg = Release|Any CPU
 		{D5BEB622-0B24-40A6-A5D7-FDE3F4E157A6}.Release|x86.Build.0 = Release|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Debug|x64.Build.0 = Debug|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Debug|x86.Build.0 = Debug|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Release|x64.ActiveCfg = Release|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Release|x64.Build.0 = Release|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Release|x86.ActiveCfg = Release|Any CPU
+		{58B03E50-05F1-40AF-9AE5-E3E9CE9E88A8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

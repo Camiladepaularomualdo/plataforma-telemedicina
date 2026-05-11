@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ClinifyMobile.Views.AppointmentsListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:ClinifyMobile.ViewModels"
+    xmlns:models="clr-namespace:ClinifyMobile.Models"
+    Title="Todas as Consultas"
+    BackgroundColor="#F0F4FF">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16,0">
+
+        <!-- ── Filtros ── -->
+        <VerticalStackLayout Grid.Row="0" Spacing="10" Margin="0,14,0,8">
+
+            <!-- Busca por nome -->
+            <Frame
+                Padding="4,0"
+                BackgroundColor="White"
+                BorderColor="#D1E3FF"
+                CornerRadius="12"
+                HasShadow="False">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Label
+                        Grid.Column="0"
+                        Text="🔍"
+                        FontSize="16"
+                        VerticalOptions="Center"
+                        Margin="10,0,4,0" />
+                    <Entry
+                        Grid.Column="1"
+                        Text="{Binding SearchName}"
+                        Placeholder="Buscar paciente..."
+                        PlaceholderColor="#B0BEC5"
+                        BackgroundColor="Transparent"
+                        TextColor="#1A2E4A"
+                        FontSize="14"
+                        Margin="4,0" />
+                    <Button
+                        Grid.Column="2"
+                        Text="✕"
+                        Command="{Binding ClearFiltersCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="#8A9BB0"
+                        FontSize="16"
+                        Padding="8,0"
+                        IsVisible="{Binding SearchName, Converter={StaticResource StringNotEmptyConverter}}" />
+                </Grid>
+            </Frame>
+
+            <!-- Filtro de status -->
+            <Frame
+                Padding="8,0"
+                BackgroundColor="White"
+                BorderColor="#D1E3FF"
+                CornerRadius="12"
+                HasShadow="False">
+                <Picker
+                    Title="Filtrar por status"
+                    ItemsSource="{Binding StatusOptions}"
+                    SelectedItem="{Binding SelectedStatusOption}"
+                    TextColor="#1A2E4A"
+                    TitleColor="#B0BEC5"
+                    BackgroundColor="Transparent" />
+            </Frame>
+        </VerticalStackLayout>
+
+        <!-- ── Error ── -->
+        <Frame
+            Grid.Row="1"
+            BackgroundColor="#FDEDEC"
+            BorderColor="#E74C3C"
+            CornerRadius="8"
+            Margin="0,0,0,8"
+            Padding="12,8"
+            IsVisible="{Binding HasError}"
+            HasShadow="False">
+            <Label Text="{Binding ErrorMessage}" TextColor="#C0392B" FontSize="13" />
+        </Frame>
+
+        <!-- ── Lista ── -->
+        <RefreshView
+            Grid.Row="2"
+            Command="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            RefreshColor="#4A90D9">
+
+            <CollectionView
+                ItemsSource="{Binding Appointments}"
+                EmptyView="Nenhuma consulta encontrada.">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Appointment">
+                        <Frame
+                            Margin="0,0,0,10"
+                            Padding="0"
+                            CornerRadius="16"
+                            BackgroundColor="White"
+                            HasShadow="True">
+
+                            <Grid ColumnDefinitions="6,*">
+
+                                <BoxView
+                                    Grid.Column="0"
+                                    CornerRadius="16,0,0,16"
+                                    BackgroundColor="{Binding Status, Converter={StaticResource StatusColorConverter}}" />
+
+                                <Grid
+                                    Grid.Column="1"
+                                    Padding="14,12"
+                                    RowDefinitions="Auto,Auto,Auto"
+                                    ColumnDefinitions="*,Auto">
+
+                                    <Label
+                                        Grid.Row="0" Grid.Column="0"
+                                        Text="{Binding PatientName}"
+                                        FontSize="15"
+                                        FontAttributes="Bold"
+                                        TextColor="#1A2E4A" />
+
+                                    <Frame
+                                        Grid.Row="0" Grid.Column="1"
+                                        Padding="8,3"
+                                        CornerRadius="12"
+                                        BackgroundColor="{Binding Status, Converter={StaticResource StatusLightColorConverter}}"
+                                        HasShadow="False">
+                                        <Label
+                                            Text="{Binding StatusLabel}"
+                                            FontSize="11"
+                                            FontAttributes="Bold"
+                                            TextColor="{Binding Status, Converter={StaticResource StatusColorConverter}}" />
+                                    </Frame>
+
+                                    <Label
+                                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                        FontSize="13"
+                                        TextColor="#6B7A8D"
+                                        Margin="0,4,0,0">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="🕐 " />
+                                                <Span Text="{Binding FormattedTime}" />
+                                                <Span Text="   📅 " />
+                                                <Span Text="{Binding FormattedDate}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <HorizontalStackLayout
+                                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                        Spacing="8"
+                                        Margin="0,10,0,0">
+
+                                        <Button
+                                            Text="Status"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.UpdateStatusCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="#EBF4FF"
+                                            TextColor="#4A90D9"
+                                            FontSize="12"
+                                            FontAttributes="Bold"
+                                            CornerRadius="8"
+                                            Padding="12,6"
+                                            HeightRequest="34" />
+
+                                        <Button
+                                            Text="E-mail"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SendEmailCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="#EAFAF1"
+                                            TextColor="#27AE60"
+                                            FontSize="12"
+                                            FontAttributes="Bold"
+                                            CornerRadius="8"
+                                            Padding="12,6"
+                                            HeightRequest="34" />
+
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Loading overlay -->
+        <Grid
+            Grid.RowSpan="3"
+            BackgroundColor="#80000000"
+            IsVisible="{Binding IsBusy}">
+            <ActivityIndicator
+                IsRunning="True"
+                Color="#4A90D9"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

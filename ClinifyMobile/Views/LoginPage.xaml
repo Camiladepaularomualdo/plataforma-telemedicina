@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ClinifyMobile.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:ClinifyMobile.ViewModels"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="#F0F4FF">
+
+    <ScrollView>
+        <Grid RowDefinitions="*, Auto, *" Padding="0">
+
+            <!-- Background decoration top -->
+            <BoxView
+                Grid.Row="0"
+                BackgroundColor="#4A90D9"
+                HeightRequest="260"
+                VerticalOptions="Fill" />
+
+            <!-- Card central -->
+            <Frame
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                Margin="24,100,24,0"
+                Padding="30,36,30,36"
+                BackgroundColor="White"
+                CornerRadius="24"
+                HasShadow="True"
+                VerticalOptions="Start">
+
+                <VerticalStackLayout Spacing="0">
+
+                    <!-- Logo / Ícone -->
+                    <Frame
+                        Margin="0,0,0,20"
+                        Padding="0"
+                        BackgroundColor="#EBF4FF"
+                        CornerRadius="40"
+                        HeightRequest="80"
+                        WidthRequest="80"
+                        HorizontalOptions="Center">
+                        <Label
+                            Text="🧠"
+                            FontSize="38"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+                    </Frame>
+
+                    <!-- Título -->
+                    <Label
+                        Text="Clinfy"
+                        FontSize="30"
+                        FontAttributes="Bold"
+                        TextColor="#1A2E4A"
+                        HorizontalOptions="Center" />
+
+                    <Label
+                        Text="Plataforma de Telemedicina"
+                        FontSize="13"
+                        TextColor="#8A9BB0"
+                        HorizontalOptions="Center"
+                        Margin="0,4,0,28" />
+
+                    <!-- Campo E-mail -->
+                    <Label
+                        Text="E-mail"
+                        FontSize="13"
+                        FontAttributes="Bold"
+                        TextColor="#4A5568"
+                        Margin="0,0,0,6" />
+
+                    <Frame
+                        Padding="4,0"
+                        BackgroundColor="#F7FAFF"
+                        BorderColor="#D1E3FF"
+                        CornerRadius="12"
+                        Margin="0,0,0,16"
+                        HasShadow="False">
+                        <Entry
+                            x:Name="EmailEntry"
+                            Text="{Binding Email}"
+                            Placeholder="seu@email.com"
+                            PlaceholderColor="#B0BEC5"
+                            Keyboard="Email"
+                            ReturnType="Next"
+                            BackgroundColor="Transparent"
+                            TextColor="#1A2E4A"
+                            FontSize="15"
+                            Margin="8,4" />
+                    </Frame>
+
+                    <!-- Campo Senha -->
+                    <Label
+                        Text="Senha"
+                        FontSize="13"
+                        FontAttributes="Bold"
+                        TextColor="#4A5568"
+                        Margin="0,0,0,6" />
+
+                    <Frame
+                        Padding="4,0"
+                        BackgroundColor="#F7FAFF"
+                        BorderColor="#D1E3FF"
+                        CornerRadius="12"
+                        Margin="0,0,0,8"
+                        HasShadow="False">
+                        <Entry
+                            x:Name="PasswordEntry"
+                            Text="{Binding Password}"
+                            Placeholder="••••••••"
+                            PlaceholderColor="#B0BEC5"
+                            IsPassword="True"
+                            ReturnType="Done"
+                            ReturnCommand="{Binding LoginCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="#1A2E4A"
+                            FontSize="15"
+                            Margin="8,4" />
+                    </Frame>
+
+                    <!-- Mensagem de erro -->
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        TextColor="#E74C3C"
+                        FontSize="13"
+                        IsVisible="{Binding HasError}"
+                        Margin="0,4,0,8"
+                        HorizontalOptions="Center" />
+
+                    <!-- Botão Entrar -->
+                    <Button
+                        Text="Entrar"
+                        Command="{Binding LoginCommand}"
+                        BackgroundColor="#4A90D9"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        HeightRequest="52"
+                        Margin="0,12,0,0" />
+
+                    <!-- Loading -->
+                    <ActivityIndicator
+                        IsRunning="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}"
+                        Color="#4A90D9"
+                        Margin="0,12,0,0"
+                        HorizontalOptions="Center" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Rodapé -->
+            <Label
+                Grid.Row="2"
+                Text="© 2025 Clinfy — Telemedicina"
+                TextColor="#8A9BB0"
+                FontSize="12"
+                HorizontalOptions="Center"
+                VerticalOptions="End"
+                Margin="0,0,0,24" />
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

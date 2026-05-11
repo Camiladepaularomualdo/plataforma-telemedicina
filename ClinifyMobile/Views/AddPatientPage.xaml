@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ClinifyMobile.Views.AddPatientPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:ClinifyMobile.ViewModels"
+    Title="Novo Paciente"
+    BackgroundColor="#F0F4FF">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*" Padding="20,16">
+
+            <!-- Cabeçalho -->
+            <VerticalStackLayout Grid.Row="0" Spacing="2" Margin="0,0,0,20">
+                <Label Text="👤 Cadastrar Paciente"
+                       FontSize="22" FontAttributes="Bold" TextColor="#1A2E4A" />
+                <Label Text="Preencha os dados do novo paciente"
+                       FontSize="14" TextColor="#8A9BB0" />
+            </VerticalStackLayout>
+
+            <!-- Formulário -->
+            <Frame
+                Grid.Row="1"
+                BackgroundColor="White"
+                CornerRadius="20"
+                Padding="24"
+                HasShadow="True">
+                <VerticalStackLayout Spacing="16">
+
+                    <!-- Nome -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Nome completo *" FontSize="13" FontAttributes="Bold" TextColor="#4A5568" />
+                        <Frame Padding="4,0" BackgroundColor="#F7FAFF" BorderColor="#D1E3FF" CornerRadius="12" HasShadow="False">
+                            <Entry Text="{Binding Name}" Placeholder="Ex: Maria Silva"
+                                   PlaceholderColor="#B0BEC5" BackgroundColor="Transparent"
+                                   TextColor="#1A2E4A" FontSize="15" Margin="8,4" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- E-mail -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="E-mail *" FontSize="13" FontAttributes="Bold" TextColor="#4A5568" />
+                        <Frame Padding="4,0" BackgroundColor="#F7FAFF" BorderColor="#D1E3FF" CornerRadius="12" HasShadow="False">
+                            <Entry Text="{Binding Email}" Placeholder="paciente@email.com"
+                                   Keyboard="Email" PlaceholderColor="#B0BEC5" BackgroundColor="Transparent"
+                                   TextColor="#1A2E4A" FontSize="15" Margin="8,4" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Telefone -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Telefone *" FontSize="13" FontAttributes="Bold" TextColor="#4A5568" />
+                        <Frame Padding="4,0" BackgroundColor="#F7FAFF" BorderColor="#D1E3FF" CornerRadius="12" HasShadow="False">
+                            <Entry Text="{Binding Phone}" Placeholder="(11) 99999-9999"
+                                   Keyboard="Telephone" PlaceholderColor="#B0BEC5" BackgroundColor="Transparent"
+                                   TextColor="#1A2E4A" FontSize="15" Margin="8,4" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- CPF -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CPF *" FontSize="13" FontAttributes="Bold" TextColor="#4A5568" />
+                        <Frame Padding="4,0" BackgroundColor="#F7FAFF" BorderColor="#D1E3FF" CornerRadius="12" HasShadow="False">
+                            <Entry Text="{Binding Cpf}" Placeholder="000.000.000-00"
+                                   Keyboard="Numeric" PlaceholderColor="#B0BEC5" BackgroundColor="Transparent"
+                                   TextColor="#1A2E4A" FontSize="15" Margin="8,4" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Data de nascimento -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Data de nascimento *" FontSize="13" FontAttributes="Bold" TextColor="#4A5568" />
+                        <Frame Padding="8,4" BackgroundColor="#F7FAFF" BorderColor="#D1E3FF" CornerRadius="12" HasShadow="False">
+                            <DatePicker
+                                Date="{Binding BirthDate}"
+                                Format="dd/MM/yyyy"
+                                TextColor="#1A2E4A"
+                                BackgroundColor="Transparent" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Erro -->
+                    <Frame
+                        BackgroundColor="#FDEDEC" BorderColor="#E74C3C"
+                        CornerRadius="10" Padding="12,8"
+                        IsVisible="{Binding HasError}" HasShadow="False">
+                        <Label Text="{Binding ErrorMessage}" TextColor="#C0392B" FontSize="13" />
+                    </Frame>
+
+                    <!-- Botões -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,8,0,0">
+                        <Button
+                            Grid.Column="0"
+                            Text="Cancelar"
+                            Command="{Binding CancelCommand}"
+                            BackgroundColor="#F0F4FF"
+                            TextColor="#6B7A8D"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            CornerRadius="14"
+                            HeightRequest="50" />
+
+                        <Button
+                            Grid.Column="1"
+                            Text="Salvar"
+                            Command="{Binding SaveCommand}"
+                            BackgroundColor="#4A90D9"
+                            TextColor="White"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            CornerRadius="14"
+                            HeightRequest="50" />
+                    </Grid>
+
+                    <!-- Loading -->
+                    <ActivityIndicator
+                        IsRunning="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}"
+                        Color="#4A90D9"
+                        HorizontalOptions="Center" />
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

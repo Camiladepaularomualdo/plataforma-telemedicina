@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ClinifyMobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:ClinifyMobile.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarHasShadow="True">
+
+    <!-- Estilo da barra de navegação -->
+    <Shell.Resources>
+        <Style TargetType="Shell" ApplyToDerivedTypes="True">
+            <Setter Property="Shell.BackgroundColor" Value="#4A90D9" />
+            <Setter Property="Shell.ForegroundColor" Value="White" />
+            <Setter Property="Shell.TitleColor" Value="White" />
+            <Setter Property="Shell.DisabledColor" Value="#B0BEC5" />
+            <Setter Property="Shell.UnselectedColor" Value="#B3D4F0" />
+            <Setter Property="Shell.TabBarBackgroundColor" Value="White" />
+            <Setter Property="Shell.TabBarForegroundColor" Value="#4A90D9" />
+            <Setter Property="Shell.TabBarUnselectedColor" Value="#95A5A6" />
+        </Style>
+    </Shell.Resources>
+
+    <!-- Login (sem navbar) -->
+    <ShellContent
+        Route="LoginPage"
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Shell.NavBarIsVisible="False" />
+
+    <!-- Agenda Principal -->
+    <ShellContent
+        Route="AgendaPage"
+        Title="Agenda"
+        ContentTemplate="{DataTemplate views:AgendaPage}" />
+
+    <!-- Páginas de detalhe (modal-style) -->
+    <!-- Registradas via Routing.RegisterRoute no AppShell.xaml.cs -->
+
+</Shell>

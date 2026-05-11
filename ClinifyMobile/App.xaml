@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="ClinifyMobile.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:ClinifyMobile.Converters">
+
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- ── Value Converters ── -->
+            <converters:StatusColorConverter      x:Key="StatusColorConverter" />
+            <converters:StatusLightColorConverter x:Key="StatusLightColorConverter" />
+            <converters:StringNotEmptyConverter   x:Key="StringNotEmptyConverter" />
+            <converters:ZeroToBoolConverter       x:Key="ZeroToBoolConverter" />
+
+            <!-- ── Color Palette ── -->
+            <Color x:Key="Primary">#4A90D9</Color>
+            <Color x:Key="PrimaryLight">#EBF4FF</Color>
+            <Color x:Key="Background">#F0F4FF</Color>
+            <Color x:Key="Surface">White</Color>
+            <Color x:Key="TextPrimary">#1A2E4A</Color>
+            <Color x:Key="TextSecondary">#6B7A8D</Color>
+            <Color x:Key="TextMuted">#8A9BB0</Color>
+            <Color x:Key="Border">#D1E3FF</Color>
+            <Color x:Key="Success">#27AE60</Color>
+            <Color x:Key="Warning">#F5A623</Color>
+            <Color x:Key="Error">#E74C3C</Color>
+
+            <!-- ── Global Styles ── -->
+            <Style TargetType="Button">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="HeightRequest" Value="48" />
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+                <Setter Property="PlaceholderColor" Value="{StaticResource TextMuted}" />
+            </Style>
+
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+            </Style>
+
+            <Style TargetType="Frame">
+                <Setter Property="BorderColor" Value="{StaticResource Border}" />
+                <Setter Property="CornerRadius" Value="16" />
+                <Setter Property="HasShadow" Value="False" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
