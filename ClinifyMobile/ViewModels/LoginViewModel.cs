@@ -16,6 +16,7 @@ public class LoginViewModel : BaseViewModel
         Title        = "Clinfy";
 
         LoginCommand = new Command(async () => await DoLoginAsync(), () => !IsBusy);
+        GoToRegisterCommand = new Command(async () => await GoToRegisterAsync());
     }
 
     // ─── Properties ──────────────────────────────────────────────────────────
@@ -37,6 +38,7 @@ public class LoginViewModel : BaseViewModel
     // ─── Commands ─────────────────────────────────────────────────────────────
 
     public ICommand LoginCommand { get; }
+    public ICommand GoToRegisterCommand { get; }
 
     // ─── Logic ───────────────────────────────────────────────────────────────
 
@@ -63,5 +65,10 @@ public class LoginViewModel : BaseViewModel
     {
         if (_session.IsLoggedIn)
             await Shell.Current.GoToAsync("//AgendaPage");
+    }
+
+    private async Task GoToRegisterAsync()
+    {
+        await Shell.Current.GoToAsync("//RegisterPage");
     }
 }

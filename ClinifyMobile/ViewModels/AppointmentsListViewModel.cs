@@ -14,11 +14,13 @@ namespace ClinifyMobile.ViewModels;
 public class AppointmentsListViewModel : BaseViewModel
 {
     private readonly AppointmentService _appointmentService;
+    private readonly DoctorService      _doctorService;
     private List<Appointment> _allAppointments = [];
 
-    public AppointmentsListViewModel(AppointmentService appointmentService)
+    public AppointmentsListViewModel(AppointmentService appointmentService, DoctorService doctorService)
     {
         _appointmentService = appointmentService;
+        _doctorService      = doctorService;
         Title = "Consultas";
 
         LoadCommand         = new Command(async () => await LoadAsync());
@@ -148,6 +150,18 @@ public class AppointmentsListViewModel : BaseViewModel
 
         await ExecuteAsync(async () =>
         {
+            var config = await _doctorService.GetGmailConfigAsync();
+            if (config != null && !config.HasConfig)
+            {
+                var email = await Shell.Current.DisplayPromptAsync("Configurar E-mail", "Para enviar e-mails aos pacientes, insira o seu endereço do Gmail:", "Avançar", "Cancelar", "exemplo@gmail.com", -1, Keyboard.Email);
+                if (string.IsNullOrWhiteSpace(email) || email == "exemplo@gmail.com") return;
+
+                var password = await Shell.Current.DisplayPromptAsync("Configurar E-mail", "Agora, insira a sua Senha de App do Gmail (16 letras):", "Salvar", "Cancelar", "", -1, Keyboard.Text);
+                if (string.IsNullOrWhiteSpace(password)) return;
+
+                await _doctorService.SaveGmailConfigAsync(email, password);
+            }
+
             await _appointmentService.SendEmailAsync(appointment.Id);
             await Shell.Current.DisplayAlert("Sucesso", "E-mail enviado!", "OK");
         });

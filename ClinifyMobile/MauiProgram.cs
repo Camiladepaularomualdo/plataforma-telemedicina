@@ -45,9 +45,11 @@ public static class MauiProgram
         builder.Services.AddSingleton<AuthService>();
         builder.Services.AddSingleton<AppointmentService>();
         builder.Services.AddSingleton<PatientService>();
+        builder.Services.AddSingleton<DoctorService>();
 
         // ─── ViewModels (Transient = nova instância por página) ─────────────
         builder.Services.AddTransient<LoginViewModel>();
+        builder.Services.AddTransient<RegisterViewModel>();
         builder.Services.AddTransient<AgendaViewModel>();
         builder.Services.AddTransient<AppointmentsListViewModel>();
         builder.Services.AddTransient<AddPatientViewModel>();
@@ -55,6 +57,7 @@ public static class MauiProgram
 
         // ─── Views ──────────────────────────────────────────────────────────
         builder.Services.AddTransient<LoginPage>();
+        builder.Services.AddTransient<RegisterPage>();
         builder.Services.AddTransient<AgendaPage>();
         builder.Services.AddTransient<AppointmentsListPage>();
         builder.Services.AddTransient<AddPatientPage>();

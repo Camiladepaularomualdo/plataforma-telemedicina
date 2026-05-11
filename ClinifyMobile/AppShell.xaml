@@ -27,6 +27,12 @@
         ContentTemplate="{DataTemplate views:LoginPage}"
         Shell.NavBarIsVisible="False" />
 
+    <!-- Cadastro (sem navbar) -->
+    <ShellContent
+        Route="RegisterPage"
+        ContentTemplate="{DataTemplate views:RegisterPage}"
+        Shell.NavBarIsVisible="False" />
+
     <!-- Agenda Principal -->
     <ShellContent
         Route="AgendaPage"

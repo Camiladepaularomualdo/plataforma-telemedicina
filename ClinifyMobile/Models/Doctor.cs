@@ -13,6 +13,9 @@ public class Doctor
     [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
 
+    [JsonPropertyName("passwordHash")]
+    public string PasswordHash { get; set; } = string.Empty;
+
     [JsonPropertyName("cpf")]
     public string Cpf { get; set; } = string.Empty;
 

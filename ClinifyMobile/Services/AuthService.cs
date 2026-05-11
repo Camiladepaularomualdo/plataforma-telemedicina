@@ -33,6 +33,20 @@ public class AuthService
     }
 
     /// <summary>
+    /// Cadastra um novo médico e já realiza o login automaticamente.
+    /// </summary>
+    public async Task<Doctor> RegisterAsync(Doctor newDoctor)
+    {
+        var doctor = await _api.PostAsync<Doctor>("auth/register", newDoctor)
+                      ?? throw new ApiException("Resposta inválida do servidor ao cadastrar.");
+
+        // Realiza o "login" na sessão após o cadastro
+        await _session.SaveSessionAsync(doctor.Id, doctor.Name, doctor.Rule);
+
+        return doctor;
+    }
+
+    /// <summary>
     /// Encerra a sessão e limpa o SecureStorage.
     /// </summary>
     public void Logout()

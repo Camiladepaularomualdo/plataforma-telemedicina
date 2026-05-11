@@ -15,15 +15,18 @@ public class AgendaViewModel : BaseViewModel
     private readonly AppointmentService _appointmentService;
     private readonly AuthService        _authService;
     private readonly SessionService     _session;
+    private readonly DoctorService      _doctorService;
 
     public AgendaViewModel(
         AppointmentService appointmentService,
         AuthService authService,
-        SessionService session)
+        SessionService session,
+        DoctorService doctorService)
     {
         _appointmentService = appointmentService;
         _authService        = authService;
         _session            = session;
+        _doctorService      = doctorService;
 
         Title = "Agenda";
 
@@ -162,6 +165,18 @@ public class AgendaViewModel : BaseViewModel
 
         await ExecuteAsync(async () =>
         {
+            var config = await _doctorService.GetGmailConfigAsync();
+            if (config != null && !config.HasConfig)
+            {
+                var email = await Shell.Current.DisplayPromptAsync("Configurar E-mail", "Para enviar e-mails aos pacientes, insira o seu endereço do Gmail:", "Avançar", "Cancelar", "exemplo@gmail.com", -1, Keyboard.Email);
+                if (string.IsNullOrWhiteSpace(email) || email == "exemplo@gmail.com") return;
+
+                var password = await Shell.Current.DisplayPromptAsync("Configurar E-mail", "Agora, insira a sua Senha de App do Gmail (16 letras):", "Salvar", "Cancelar", "", -1, Keyboard.Text);
+                if (string.IsNullOrWhiteSpace(password)) return;
+
+                await _doctorService.SaveGmailConfigAsync(email, password);
+            }
+
             await _appointmentService.SendEmailAsync(appointment.Id);
             await Shell.Current.DisplayAlert("Sucesso", "E-mail enviado com sucesso!", "OK");
         });
