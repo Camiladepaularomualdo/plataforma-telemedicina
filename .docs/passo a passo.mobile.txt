@@ -1,0 +1,81 @@
+# Guia Passo a Passo: Publicar App .NET MAUI na Google Play Store
+
+Publicar seu aplicativo `ClinifyMobile` (.NET MAUI) na Google Play Store envolve preparar o aplicativo, assinar digitalmente e enviá-lo através do Google Play Console. Aqui está o passo a passo completo.
+
+## Fase 1: Preparação do Aplicativo
+
+1. **Configurar o Identificador e Versão do App**
+   Abra o arquivo `ClinifyMobile.csproj` e verifique as seguintes tags:
+   - `<ApplicationId>`: Deve ser um nome único no formato reverso de domínio (ex: `com.suaempresa.clinifymobile`).
+   - `<ApplicationDisplayVersion>`: A versão que os usuários verão (ex: `1.0.0`).
+   - `<ApplicationVersion>`: Um número inteiro que deve ser incrementado a cada nova atualização (ex: `1`, `2`, `3`).
+
+2. **Permissões do Android**
+   Verifique o arquivo `Platforms/Android/AndroidManifest.xml`. Garanta que ele possua as permissões necessárias (como internet, câmera, etc) que o seu app utiliza.
+
+3. **Ícones e Splash Screen**
+   Certifique-se de que os arquivos SVG dos ícones (`appicon.svg`) e da tela de abertura (`appiconfg.svg`) estão configurados corretamente na pasta `Resources/AppIcon` e `Resources/Splash`.
+
+## Fase 2: Criar a Chave de Assinatura (Keystore)
+
+Para que o Google aceite o seu aplicativo, ele precisa ser assinado digitalmente.
+
+1. Abra o **Terminal** (ou Prompt de Comando/PowerShell).
+2. Execute o comando `keytool` (que vem instalado com o Java/Android SDK) para criar sua keystore:
+   ```bash
+   keytool -genkey -v -keystore clinify.keystore -alias clinify_alias -keyalg RSA -keysize 2048 -validity 10000
+   ```
+3. O terminal pedirá para você criar uma **senha** e preencher alguns dados (nome, empresa, etc).
+4. Guarde muito bem este arquivo `clinify.keystore` e a senha. **Se você perdê-los, não poderá atualizar o aplicativo na loja no futuro.**
+
+## Fase 3: Gerar o Pacote (.AAB) Assinado
+
+A Google Play Store exige o formato **Android App Bundle (.aab)** em vez do antigo `.apk`.
+
+1. No terminal, navegue até a pasta do projeto `ClinifyMobile`.
+2. Execute o comando de publicação do .NET MAUI, substituindo os valores pelas senhas e caminhos que você criou:
+   ```bash
+   dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore="caminho/para/clinify.keystore" -p:AndroidSigningKeyAlias=clinify_alias -p:AndroidSigningKeyPass="suasenha" -p:AndroidSigningStorePass="suasenha"
+   ```
+3. Ao finalizar, o arquivo `.aab` será gerado na pasta `bin/Release/net8.0-android/publish/`.
+
+## Fase 4: Google Play Console
+
+1. **Criar Conta de Desenvolvedor**
+   - Acesse o [Google Play Console](https://play.google.com/console).
+   - Registre-se e pague a taxa única de US$ 25 (necessário cartão de crédito internacional).
+
+2. **Criar um Novo App**
+   - No painel, clique em **Criar app**.
+   - Preencha o nome do aplicativo (ex: Clinify Telemedicina), idioma padrão, e marque se é um app gratuito ou pago.
+
+3. **Configurar a Ficha da Loja**
+   No menu lateral, vá em **Crescimento > Presença na loja > Página principal da loja** e preencha:
+   - Descrição curta e completa.
+   - Ícone do app (512x512px).
+   - Gráfico de recursos (1024x500px).
+   - Capturas de tela (Screenshots) do app rodando no celular.
+
+4. **Preencher os Questionários e Políticas**
+   Na seção **Política do app** (no final do menu lateral), você precisará completar:
+   - Política de Privacidade (adicione a URL da política de privacidade do seu sistema).
+   - Acesso a apps (informe se o app exige login, fornecendo credenciais de teste para o revisor do Google).
+   - Classificação de conteúdo (questionário para definir a idade mínima).
+   - Segurança de dados (declarar quais dados o app coleta, como e-mails e senhas).
+
+## Fase 5: Enviar para Revisão e Publicar
+
+1. **Criar a Versão de Produção**
+   - Vá em **Lançamento > Produção** (ou Teste Fechado, se preferir testar antes).
+   - Clique em **Criar nova versão**.
+2. **Fazer Upload do AAB**
+   - Arraste e solte o arquivo `.aab` (gerado na Fase 3) na área de pacotes de apps.
+   - Adicione as notas de lançamento (ex: "Primeira versão do ClinifyMobile").
+3. **Revisar e Lançar**
+   - Clique em **Salvar** e depois em **Revisar versão**.
+   - Se houver algum aviso ou erro, corrija-o.
+   - Por fim, clique em **Iniciar lançamento na Produção**.
+
+> [!IMPORTANT]
+> A primeira revisão do Google pode demorar até **7 dias úteis**. As atualizações subsequentes geralmente são aprovadas em poucas horas.
+> O Google Play Console é bastante rígido com a Política de Privacidade e os testes de Login. Certifique-se de fornecer um usuário e senha válidos (pode ser o seu fluxo de usuário novo) para que o revisor do Google consiga testar as funcionalidades do aplicativo por dentro.
