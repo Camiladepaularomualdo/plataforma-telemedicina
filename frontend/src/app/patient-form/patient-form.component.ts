@@ -25,7 +25,15 @@ export class PatientFormComponent {
         this.close.emit();
       },
       error: (err) => {
-        this.errorStr = err.error || 'Erro ao cadastrar paciente';
+        let errMsg = 'Erro ao cadastrar paciente';
+        if (typeof err.error === 'string') {
+          errMsg = err.error;
+        } else if (err.error && err.error.errors) {
+          errMsg = Object.values(err.error.errors).map((e: any) => e.join(', ')).join(' | ');
+        } else if (err.error && err.error.message) {
+          errMsg = err.error.message;
+        }
+        this.errorStr = errMsg;
       }
     });
   }

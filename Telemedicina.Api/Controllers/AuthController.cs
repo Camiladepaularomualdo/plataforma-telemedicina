@@ -10,10 +10,12 @@ namespace Telemedicina.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IDoctorService _doctorService;
+    private readonly IPatientService _patientService;
 
-    public AuthController(IDoctorService doctorService)
+    public AuthController(IDoctorService doctorService, IPatientService patientService)
     {
         _doctorService = doctorService;
+        _patientService = patientService;
     }
 
     [HttpPost("login")]
@@ -24,6 +26,24 @@ public class AuthController : ControllerBase
         if (doctor.IsDeleted) return Unauthorized("Conta inativa. Entre em contato com o suporte da Clinfy.");
         
         return Ok(doctor);
+    }
+
+    [HttpPost("patient/login")]
+    public async Task<IActionResult> PatientLogin([FromBody] LoginDto dto)
+    {
+        var patient = await _patientService.AuthenticateAsync(dto.Email, dto.Password);
+        if (patient == null) return Unauthorized("Invalid email or password");
+        
+        return Ok(patient);
+    }
+
+    [HttpPost("patient/first-access")]
+    public async Task<IActionResult> PatientFirstAccess([FromBody] FirstAccessDto dto)
+    {
+        var success = await _patientService.GenerateFirstAccessPasswordAsync(dto.Email);
+        if (!success) return NotFound("Patient not found with this email");
+
+        return Ok(new { message = "Seu primeiro acesso foi gerado com sucesso. Verifique seu e-mail." });
     }
 
     [HttpPost("register")]
@@ -45,4 +65,9 @@ public class LoginDto
 {
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+}
+
+public class FirstAccessDto
+{
+    public string Email { get; set; } = string.Empty;
 }

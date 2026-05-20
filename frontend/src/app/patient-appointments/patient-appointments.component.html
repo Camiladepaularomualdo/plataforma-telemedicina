@@ -1,0 +1,56 @@
+<div class="agenda-layout">
+    <header class="agenda-header">
+        <div class="header-content container">
+            <div class="logo">
+                <h2>Meus Agendamentos</h2>
+            </div>
+            <div class="actions">
+                <button class="secondary" (click)="logout()">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container agenda-main">
+        <div class="agenda-card card">
+            <div class="loading" *ngIf="loading">Carregando...</div>
+
+            <div class="empty-state" *ngIf="!loading && appointments.length === 0">
+                <p>Você ainda não possui agendamentos.</p>
+            </div>
+
+            <div class="table-container" *ngIf="!loading && appointments.length > 0">
+                <table class="medical-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Profissional</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let apt of appointments">
+                            <td>{{ apt.date | date:'dd/MM/yyyy' }}</td>
+                            <td class="time-cell">{{ formatTime(apt.time) }}</td>
+                            <td class="name-cell">{{ apt.doctor?.name || 'Não informado' }}</td>
+                            <td>
+                                <span class="status-badge" [ngClass]="getStatusClass(apt.status)">
+                                    {{ getStatusName(apt.status) }}
+                                </span>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="apt.meetingUrl; else noUrl">
+                                    <a [href]="apt.meetingUrl" target="_blank" class="primary button-link">Entrar na Sala</a>
+                                </ng-container>
+                                <ng-template #noUrl>
+                                    <span class="text-muted">Aguardando Link</span>
+                                </ng-template>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>

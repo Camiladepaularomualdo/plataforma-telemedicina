@@ -13,6 +13,14 @@ export class AuthService {
     return localStorage.getItem('doctorRule') || 'usr';
   }
 
+  getPatientId(): string | null {
+    return localStorage.getItem('patientId');
+  }
+
+  isPatient(): boolean {
+    return !!this.getPatientId();
+  }
+
   /**
    * Admin role: access to Dashboard/metrics, but NOT to
    * appointments, patient registration, or scheduling.
@@ -69,5 +77,6 @@ export class AuthService {
   clearAuth(): void {
     localStorage.removeItem('doctorId');
     localStorage.removeItem('doctorRule');
+    localStorage.removeItem('patientId');
   }
 }

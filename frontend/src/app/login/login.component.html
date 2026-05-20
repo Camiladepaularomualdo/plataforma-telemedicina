@@ -2,10 +2,17 @@
     <div class="card login-card">
         <div class="login-header">
             <h1>Clinfy-Atendimento-Online</h1>
-            <p class="subtitle">{{ isLoginMode ? 'Acesso a plataforma' : 'Crie sua conta médica' }}</p>
+            <p class="subtitle" *ngIf="profileType === 'doctor'">{{ isLoginMode ? 'Acesso a plataforma' : 'Crie sua conta médica' }}</p>
+            <p class="subtitle" *ngIf="profileType === 'patient'">Acesso do Paciente</p>
         </div>
 
-        <div *ngIf="isLoginMode" class="form-section">
+        <div class="profile-toggle" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; justify-content: center;">
+            <button [ngClass]="{'primary': profileType === 'doctor', 'secondary': profileType !== 'doctor'}" (click)="setProfile('doctor')">Sou Profissional</button>
+            <button [ngClass]="{'primary': profileType === 'patient', 'secondary': profileType !== 'patient'}" (click)="setProfile('patient')">Sou Paciente</button>
+        </div>
+
+        <!-- DOCTOR LOGIN -->
+        <div *ngIf="profileType === 'doctor' && isLoginMode" class="form-section">
             <div *ngIf="loginError" class="error-msg">{{ loginError }}</div>
 
             <div class="form-group">
@@ -25,7 +32,8 @@
             </div>
         </div>
 
-        <div *ngIf="!isLoginMode" class="form-section">
+        <!-- DOCTOR REGISTER -->
+        <div *ngIf="profileType === 'doctor' && !isLoginMode" class="form-section">
             <div *ngIf="regError" class="error-msg">{{ regError }}</div>
 
             <div class="form-group">
@@ -63,6 +71,30 @@
 
             <div class="toggle-link">
                 <p>Já tem conta? <a (click)="toggleMode()">Voltar para Login</a></p>
+            </div>
+        </div>
+
+        <!-- PATIENT LOGIN / FIRST ACCESS -->
+        <div *ngIf="profileType === 'patient'" class="form-section">
+            <div *ngIf="loginError" class="error-msg">{{ loginError }}</div>
+            <div *ngIf="successMsg" class="success-msg" style="color: green; margin-bottom: 1rem;">{{ successMsg }}</div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" [(ngModel)]="patientEmail" placeholder="paciente@exemplo.com" />
+            </div>
+
+            <div class="form-group" *ngIf="!isFirstAccess">
+                <label>Senha</label>
+                <input type="password" [(ngModel)]="patientPassword" placeholder="Senha Temporária" />
+            </div>
+
+            <button class="primary full-width" *ngIf="!isFirstAccess" (click)="onPatientLogin()">Entrar</button>
+            <button class="primary full-width" *ngIf="isFirstAccess" (click)="onPatientFirstAccess()">Solicitar Senha</button>
+
+            <div class="toggle-link">
+                <p *ngIf="!isFirstAccess">Primeira vez aqui? <a (click)="togglePatientMode()">Solicitar primeiro acesso</a></p>
+                <p *ngIf="isFirstAccess">Já tem a senha? <a (click)="togglePatientMode()">Fazer login</a></p>
             </div>
         </div>
     </div>

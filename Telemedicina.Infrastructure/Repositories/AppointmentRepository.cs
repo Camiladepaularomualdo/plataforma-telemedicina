@@ -32,6 +32,16 @@ public class AppointmentRepository : GenericRepository<Appointment>, IAppointmen
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Appointment>> GetPatientAppointmentsAsync(int patientId)
+    {
+        return await _dbSet
+            .Include(a => a.Doctor)
+            .Where(a => a.PatientId == patientId)
+            .OrderByDescending(a => a.Date)
+            .ThenBy(a => a.Time)
+            .ToListAsync();
+    }
+
     public async Task<Appointment?> GetAppointmentWithPatientAsync(int id)
     {
         return await _dbSet

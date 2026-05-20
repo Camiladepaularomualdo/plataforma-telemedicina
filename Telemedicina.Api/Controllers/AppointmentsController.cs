@@ -30,6 +30,13 @@ public class AppointmentsController : ControllerBase
         return Ok(appointments);
     }
 
+    [HttpGet("patient/{patientId}")]
+    public async Task<IActionResult> GetByPatient(int patientId)
+    {
+        var appointments = await _appointmentService.GetPatientAppointmentsAsync(patientId);
+        return Ok(appointments);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Appointment appointment)
     {

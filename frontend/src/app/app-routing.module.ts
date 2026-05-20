@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { FaqComponent } from './faq/faq.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
+import { PatientAppointmentsComponent } from './patient-appointments/patient-appointments.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'appointments', component: AppointmentsListComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'faq', component: FaqComponent },
-  { path: 'admin-report', component: AdminReportComponent }
+  { path: 'admin-report', component: AdminReportComponent },
+  { path: 'meus-agendamentos', component: PatientAppointmentsComponent }
 ];
 
 @NgModule({

@@ -46,4 +46,44 @@ public class EmailService : IEmailService
 
         await client.SendMailAsync(message);
     }
+
+    public async Task SendTemporaryPasswordEmailAsync(string patientEmail, string doctorName, string tempPassword, string gmailAddress, string gmailAppPassword)
+    {
+        if (string.IsNullOrEmpty(patientEmail))
+            throw new ArgumentException("E-mail do paciente não pode ser vazio.");
+
+        var message = new MailMessage
+        {
+            From = new MailAddress(gmailAddress, doctorName),
+            Subject = $"Seu Primeiro Acesso na Plataforma Clinfy",
+            Body = $@"
+                <h2>Olá!</h2>
+                <p>O Dr(a). {doctorName} cadastrou você na plataforma de atendimento online.</p>
+                <br>
+                <p>Sua senha temporária para primeiro acesso é:</p>
+                <h3>{tempPassword}</h3>
+                <br>
+                <p>Acesse o portal para visualizar seus agendamentos.</p>
+                <p>Atenciosamente,<br>Equipe Clinfy-Atendimento-Online.</p>
+                <br>
+                <p style='color: #64748b; font-size: 0.85rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; margin-top: 2rem;'>
+                    clinfy
+                </p>
+            ",
+            IsBodyHtml = true
+        };
+        message.To.Add(new MailAddress(patientEmail));
+
+        var passwordToUse = gmailAppPassword?.Replace("\n", "").Replace("\r", "").Replace(" ", "");
+
+        using var client = new SmtpClient("smtp.gmail.com", 587)
+        {
+            UseDefaultCredentials = false,
+            Credentials = new NetworkCredential(gmailAddress, passwordToUse),
+            EnableSsl = true,
+            DeliveryMethod = SmtpDeliveryMethod.Network
+        };
+
+        await client.SendMailAsync(message);
+    }
 }

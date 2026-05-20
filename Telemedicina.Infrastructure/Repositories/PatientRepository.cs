@@ -17,6 +17,11 @@ public class PatientRepository : GenericRepository<Patient>, IPatientRepository
         return await _dbSet.FirstOrDefaultAsync(p => p.Cpf == cpf);
     }
 
+    public async Task<Patient?> GetByEmailAsync(string email)
+    {
+        return await _dbSet.FirstOrDefaultAsync(p => p.Email == email);
+    }
+
     public async Task<IEnumerable<Patient>> GetByDoctorIdAsync(int doctorId)
     {
         return await _dbSet.Where(p => p.DoctorId == doctorId).ToListAsync();

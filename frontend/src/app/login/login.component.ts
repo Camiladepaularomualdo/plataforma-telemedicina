@@ -9,14 +9,21 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  profileType: 'doctor' | 'patient' = 'doctor';
   isLoginMode = true;
 
-  // Login fields
+  // Doctor Login fields
   loginEmail = '';
   loginPassword = '';
   loginError = '';
 
-  // Register fields
+  // Patient Login fields
+  isFirstAccess = false;
+  patientEmail = '';
+  patientPassword = '';
+  successMsg = '';
+
+  // Doctor Register fields
   regName = '';
   regEmail = '';
   regPassword = '';
@@ -27,20 +34,29 @@ export class LoginComponent {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  setProfile(profile: 'doctor' | 'patient') {
+    this.profileType = profile;
+    this.loginError = '';
+    this.regError = '';
+    this.successMsg = '';
+  }
+
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
     this.loginError = '';
     this.regError = '';
   }
 
+  togglePatientMode() {
+    this.isFirstAccess = !this.isFirstAccess;
+    this.loginError = '';
+    this.successMsg = '';
+  }
+
   onLogin() {
     this.loginError = '';
     const payload = { email: this.loginEmail, password: this.loginPassword };
-    // The exact port depends on the user environment. Assuming http://localhost:5249 or similar.
-    // I will use relative or proxy, or simply http://localhost:5000 / https://localhost:5001. 
-    // Usually .NET 9 Web API creates random ports. I'll read the launchSettings.json next to fix this.
 
-    // For now:
     this.http.post<any>(`${environment.apiUrl}/auth/login`, payload).subscribe({
       next: (res) => {
         localStorage.setItem('doctorId', res.id);
@@ -48,7 +64,6 @@ export class LoginComponent {
         this.router.navigate(['/agenda']);
       },
       error: (err) => {
-        // Exibe a mensagem de erro específica do backend se houver (ex: conta inativa), ou uma padrão
         this.loginError = err.error || 'Email ou senha inválidos';
       }
     });
@@ -70,10 +85,42 @@ export class LoginComponent {
         this.loginEmail = this.regEmail;
         this.loginPassword = this.regPassword;
         this.toggleMode();
-        // optionally auto login
       },
       error: (err) => {
         this.regError = err.error || 'Registration failed';
+      }
+    });
+  }
+
+  onPatientLogin() {
+    this.loginError = '';
+    this.successMsg = '';
+    const payload = { email: this.patientEmail, password: this.patientPassword };
+
+    this.http.post<any>(`${environment.apiUrl}/auth/patient/login`, payload).subscribe({
+      next: (res) => {
+        localStorage.setItem('patientId', res.id);
+        this.router.navigate(['/meus-agendamentos']);
+      },
+      error: (err) => {
+        this.loginError = err.error || 'Email ou senha inválidos';
+      }
+    });
+  }
+
+  onPatientFirstAccess() {
+    this.loginError = '';
+    this.successMsg = '';
+    const payload = { email: this.patientEmail };
+
+    this.http.post<any>(`${environment.apiUrl}/auth/patient/first-access`, payload).subscribe({
+      next: (res) => {
+        this.successMsg = res.message;
+        this.isFirstAccess = false;
+        this.patientPassword = '';
+      },
+      error: (err) => {
+        this.loginError = err.error || 'Paciente não encontrado';
       }
     });
   }

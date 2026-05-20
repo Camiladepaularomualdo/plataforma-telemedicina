@@ -19,6 +19,7 @@ import { HomeComponent } from './home/home.component';
 import { FaqComponent } from './faq/faq.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
+import { PatientAppointmentsComponent } from './patient-appointments/patient-appointments.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CadastroComponent } from './cadastro/cadastro.component';
     HomeComponent,
     FaqComponent,
     AdminReportComponent,
-    CadastroComponent
+    CadastroComponent,
+    PatientAppointmentsComponent
   ],
   imports: [
     BrowserModule,

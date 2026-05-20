@@ -38,6 +38,11 @@ public class AppointmentService : IAppointmentService
         return await _repository.GetDoctorAppointmentsAsync(doctorId);
     }
 
+    public async Task<IEnumerable<Appointment>> GetPatientAppointmentsAsync(int patientId)
+    {
+        return await _repository.GetPatientAppointmentsAsync(patientId);
+    }
+
     public async Task<bool> UpdateStatusAsync(int appointmentId, Telemedicina.Domain.Enums.AppointmentStatus status)
     {
         var appointment = await _repository.GetByIdAsync(appointmentId);

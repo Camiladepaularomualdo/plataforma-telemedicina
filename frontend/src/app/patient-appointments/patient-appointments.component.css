@@ -1,0 +1,33 @@
+/* Reaproveita estilos base ou definidos globalmente em styles.css */
+.agenda-layout {
+    min-height: 100vh;
+    background-color: var(--background);
+}
+
+.agenda-header {
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.agenda-card {
+    padding: 2rem;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.button-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    text-align: center;
+}

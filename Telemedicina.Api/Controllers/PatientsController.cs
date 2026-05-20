@@ -39,10 +39,20 @@ public class PatientsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register([FromBody] Patient patient)
+    public async Task<IActionResult> Register([FromBody] PatientDto dto)
     {
         try
         {
+            var patient = new Patient
+            {
+                Name = dto.Name,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                BirthDate = dto.BirthDate,
+                Cpf = dto.Cpf,
+                DoctorId = dto.DoctorId
+            };
+
             var created = await _patientService.RegisterAsync(patient);
             return Ok(created);
         }
@@ -51,4 +61,14 @@ public class PatientsController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+public class PatientDto
+{
+    public string Name { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Phone { get; set; } = string.Empty;
+    public System.DateTime BirthDate { get; set; }
+    public string Cpf { get; set; } = string.Empty;
+    public int? DoctorId { get; set; }
+}
 }

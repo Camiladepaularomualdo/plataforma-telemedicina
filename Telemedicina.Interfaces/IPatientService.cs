@@ -10,4 +10,6 @@ public interface IPatientService
     Task<Patient?> GetByIdAsync(int id);
     Task<IEnumerable<Patient>> GetAllAsync();
     Task<IEnumerable<Patient>> GetByDoctorIdAsync(int doctorId);
+    Task<Patient?> AuthenticateAsync(string email, string password);
+    Task<bool> GenerateFirstAccessPasswordAsync(string email);
 }

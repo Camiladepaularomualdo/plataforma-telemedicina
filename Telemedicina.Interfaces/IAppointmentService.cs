@@ -9,6 +9,7 @@ public interface IAppointmentService
     Task<Appointment> CreateAppointmentAsync(Appointment appointment);
     Task<IEnumerable<Appointment>> GetDoctorAppointmentsByMonthAsync(int doctorId, int year, int month);
     Task<IEnumerable<Appointment>> GetDoctorAppointmentsAsync(int doctorId);
+    Task<IEnumerable<Appointment>> GetPatientAppointmentsAsync(int patientId);
     Task<bool> UpdateStatusAsync(int appointmentId, Telemedicina.Domain.Enums.AppointmentStatus status);
     Task<string?> GenerateMeetingUrlAsync(int appointmentId, string apiKey);
 }
