@@ -13,9 +13,9 @@ namespace ClinifyMobile.ViewModels;
 public class AgendaViewModel : BaseViewModel
 {
     private readonly AppointmentService _appointmentService;
-    private readonly AuthService        _authService;
-    private readonly SessionService     _session;
-    private readonly DoctorService      _doctorService;
+    private readonly AuthService _authService;
+    private readonly SessionService _session;
+    private readonly DoctorService _doctorService;
 
     public AgendaViewModel(
         AppointmentService appointmentService,
@@ -24,23 +24,23 @@ public class AgendaViewModel : BaseViewModel
         DoctorService doctorService)
     {
         _appointmentService = appointmentService;
-        _authService        = authService;
-        _session            = session;
-        _doctorService      = doctorService;
+        _authService = authService;
+        _session = session;
+        _doctorService = doctorService;
 
         Title = "Agenda";
 
-        LoadCommand               = new Command(async () => await LoadAsync());
-        PreviousMonthCommand      = new Command(async () => await PreviousMonthAsync());
-        NextMonthCommand          = new Command(async () => await NextMonthAsync());
-        LogoutCommand             = new Command(DoLogout);
-        GoToAddPatientCommand     = new Command(async () => await Shell.Current.GoToAsync("AddPatientPage"));
+        LoadCommand = new Command(async () => await LoadAsync());
+        PreviousMonthCommand = new Command(async () => await PreviousMonthAsync());
+        NextMonthCommand = new Command(async () => await NextMonthAsync());
+        LogoutCommand = new Command(DoLogout);
+        GoToAddPatientCommand = new Command(async () => await Shell.Current.GoToAsync("AddPatientPage"));
         GoToAddAppointmentCommand = new Command(async () => await Shell.Current.GoToAsync("AddAppointmentPage"));
-        GoToListCommand           = new Command(async () => await Shell.Current.GoToAsync("AppointmentsListPage"));
-        RefreshCommand            = new Command(async () => await LoadAsync());
-        UpdateStatusCommand       = new Command<Appointment>(async (a) => await UpdateStatusAsync(a));
-        SendEmailCommand          = new Command<Appointment>(async (a) => await SendEmailAsync(a));
-        GenerateMeetingCommand    = new Command<Appointment>(async (a) => await GenerateMeetingAsync(a));
+        GoToListCommand = new Command(async () => await Shell.Current.GoToAsync("AppointmentsListPage"));
+        RefreshCommand = new Command(async () => await LoadAsync());
+        UpdateStatusCommand = new Command<Appointment>(async (a) => await UpdateStatusAsync(a));
+        SendEmailCommand = new Command<Appointment>(async (a) => await SendEmailAsync(a));
+        GenerateMeetingCommand = new Command<Appointment>(async (a) => await GenerateMeetingAsync(a));
     }
 
     // ─── Properties ──────────────────────────────────────────────────────────
@@ -78,17 +78,17 @@ public class AgendaViewModel : BaseViewModel
 
     // ─── Commands ─────────────────────────────────────────────────────────────
 
-    public ICommand LoadCommand               { get; }
-    public ICommand PreviousMonthCommand      { get; }
-    public ICommand NextMonthCommand          { get; }
-    public ICommand LogoutCommand             { get; }
-    public ICommand GoToAddPatientCommand     { get; }
+    public ICommand LoadCommand { get; }
+    public ICommand PreviousMonthCommand { get; }
+    public ICommand NextMonthCommand { get; }
+    public ICommand LogoutCommand { get; }
+    public ICommand GoToAddPatientCommand { get; }
     public ICommand GoToAddAppointmentCommand { get; }
-    public ICommand GoToListCommand           { get; }
-    public ICommand RefreshCommand            { get; }
-    public ICommand UpdateStatusCommand       { get; }
-    public ICommand SendEmailCommand          { get; }
-    public ICommand GenerateMeetingCommand    { get; }
+    public ICommand GoToListCommand { get; }
+    public ICommand RefreshCommand { get; }
+    public ICommand UpdateStatusCommand { get; }
+    public ICommand SendEmailCommand { get; }
+    public ICommand GenerateMeetingCommand { get; }
 
     // ─── Load Logic ──────────────────────────────────────────────────────────
 
@@ -137,7 +137,7 @@ public class AgendaViewModel : BaseViewModel
     private async Task UpdateStatusAsync(Appointment appointment)
     {
         var options = StatusHelper.AllStatuses.Select(s => s.Label).ToArray();
-        var chosen  = await Shell.Current.DisplayActionSheet(
+        var chosen = await Shell.Current.DisplayActionSheet(
             $"Status de {appointment.PatientName}", "Cancelar", null, options);
 
         if (chosen is null or "Cancelar") return;
@@ -198,10 +198,10 @@ public class AgendaViewModel : BaseViewModel
             {
                 await Clipboard.SetTextAsync(url);
                 var open = await Shell.Current.DisplayAlert(
-                    "Sala Gerada", 
-                    "O link da sala foi gerado e copiado para a área de transferência.\n\nDeseja entrar na sala agora?", 
+                    "Sala Gerada",
+                    "O link da sala foi gerado e copiado para a área de transferência.\n\nDeseja entrar na sala agora?",
                     "Entrar na Sala", "OK");
-                
+
                 if (open)
                 {
                     await Launcher.OpenAsync(new Uri(url));
@@ -223,13 +223,13 @@ public class AgendaViewModel : BaseViewModel
 /// <summary>Grupo de agendamentos por dia para CollectionView com agrupamento.</summary>
 public class DayGroup : List<Appointment>
 {
-    public DateTime Date     { get; }
-    public string   DayLabel { get; }
+    public DateTime Date { get; }
+    public string DayLabel { get; }
 
     public DayGroup(DateTime date, string dayLabel, IEnumerable<Appointment> items)
         : base(items)
     {
-        Date     = date;
+        Date = date;
         DayLabel = dayLabel;
     }
 }

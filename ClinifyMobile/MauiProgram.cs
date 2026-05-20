@@ -26,7 +26,7 @@ public static class MauiProgram
         builder.Services.AddHttpClient<ApiService>(client =>
         {
             client.BaseAddress = new Uri(AppSettings.ApiBaseUrl + "/");
-            client.Timeout     = TimeSpan.FromSeconds(AppSettings.HttpTimeoutSeconds);
+            client.Timeout = TimeSpan.FromSeconds(AppSettings.HttpTimeoutSeconds);
         })
         .AddHttpMessageHandler<AuthDelegatingHandler>()
         .ConfigurePrimaryHttpMessageHandler(() =>
