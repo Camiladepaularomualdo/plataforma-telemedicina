@@ -1,56 +1,117 @@
-<div class="agenda-layout">
-    <header class="agenda-header">
+<div class="patient-dashboard">
+    <header class="dashboard-header">
         <div class="header-content container">
-            <div class="logo">
-                <h2>Meus Agendamentos</h2>
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.5-8.5c0 2.48-2.02 4.5-4.5 4.5s-4.5-2.02-4.5-4.5S9.52 7 12 7s4.5 2.02 4.5 4.5zM12 9c-1.38 0-2.5 1.12-2.5 2.5S10.62 14 12 14s2.5-1.12 2.5-2.5S13.38 9 12 9z"/>
+                    </svg>
+                </div>
+                <h2>Portal do Paciente</h2>
             </div>
             <div class="actions">
-                <button class="secondary" (click)="logout()">Sair</button>
+                <button class="btn-logout" (click)="logout()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    <span>Sair</span>
+                </button>
             </div>
         </div>
     </header>
 
-    <main class="container agenda-main">
-        <div class="agenda-card card">
-            <div class="loading" *ngIf="loading">Carregando...</div>
+    <div class="hero-section">
+        <div class="container hero-content">
+            <h1>Meus Agendamentos</h1>
+            <p>Acompanhe suas consultas, horários e acesse as salas virtuais diretamente por aqui.</p>
+        </div>
+    </div>
 
-            <div class="empty-state" *ngIf="!loading && appointments.length === 0">
-                <p>Você ainda não possui agendamentos.</p>
+    <main class="container main-content">
+        
+        <div class="loading-state" *ngIf="loading">
+            <div class="spinner"></div>
+            <p>Carregando seus dados...</p>
+        </div>
+
+        <div class="empty-state" *ngIf="!loading && appointments.length === 0">
+            <div class="empty-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
             </div>
+            <h3>Nenhuma consulta encontrada</h3>
+            <p>Você ainda não possui agendamentos marcados no momento.</p>
+        </div>
 
-            <div class="table-container" *ngIf="!loading && appointments.length > 0">
-                <table class="medical-table">
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Hora</th>
-                            <th>Profissional</th>
-                            <th>Status</th>
-                            <th>Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let apt of appointments">
-                            <td>{{ apt.date | date:'dd/MM/yyyy' }}</td>
-                            <td class="time-cell">{{ formatTime(apt.time) }}</td>
-                            <td class="name-cell">{{ apt.doctor?.name || 'Não informado' }}</td>
-                            <td>
-                                <span class="status-badge" [ngClass]="getStatusClass(apt.status)">
-                                    {{ getStatusName(apt.status) }}
-                                </span>
-                            </td>
-                            <td>
-                                <ng-container *ngIf="apt.meetingUrl; else noUrl">
-                                    <a [href]="apt.meetingUrl" target="_blank" class="primary button-link">Entrar na Sala</a>
-                                </ng-container>
-                                <ng-template #noUrl>
-                                    <span class="text-muted">Aguardando Link</span>
-                                </ng-template>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="appointments-grid" *ngIf="!loading && appointments.length > 0">
+            <div class="appointment-card" *ngFor="let apt of appointments">
+                <div class="card-header">
+                    <div class="date-info">
+                        <span class="day">{{ apt.date | date:'dd' }}</span>
+                        <div class="month-year">
+                            <span class="month">{{ apt.date | date:'MMM' | uppercase }}</span>
+                            <span class="year">{{ apt.date | date:'yyyy' }}</span>
+                        </div>
+                    </div>
+                    <div class="time-info">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>{{ formatTime(apt.time) }}</span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="doctor-info">
+                        <div class="doctor-avatar">
+                            {{ apt.doctor?.name ? apt.doctor.name.charAt(0).toUpperCase() : 'D' }}
+                        </div>
+                        <div class="doctor-details">
+                            <h4>{{ apt.doctor?.name || 'Não informado' }}</h4>
+                            <span class="specialty">Telemedicina</span>
+                        </div>
+                    </div>
+                    
+                    <div class="status-wrapper">
+                        <span class="status-pill" [ngClass]="getStatusClass(apt.status)">
+                            <span class="status-dot"></span>
+                            {{ getStatusName(apt.status) }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <ng-container *ngIf="!isPastAppointment(apt.date)">
+                        <ng-container *ngIf="apt.meetingUrl; else noUrl">
+                            <a [href]="apt.meetingUrl" target="_blank" class="btn-join">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                                Entrar na Sala de Vídeo
+                            </a>
+                        </ng-container>
+                        <ng-template #noUrl>
+                            <div class="btn-waiting">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                                Aguardando Liberação
+                            </div>
+                        </ng-template>
+                    </ng-container>
+
+                    <ng-container *ngIf="isPastAppointment(apt.date)">
+                        <div class="btn-waiting" style="color: var(--text-light); border-color: var(--border); background-color: var(--bg-color);">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            Consulta Encerrada
+                        </div>
+                    </ng-container>
+                </div>
             </div>
         </div>
+
     </main>
 </div>

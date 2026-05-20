@@ -1,33 +1,370 @@
-/* Reaproveita estilos base ou definidos globalmente em styles.css */
-.agenda-layout {
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+.patient-dashboard {
     min-height: 100vh;
-    background-color: var(--background);
+    background-color: var(--bg-color);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
 }
 
-.agenda-header {
-    background-color: #fff;
-    border-bottom: 1px solid var(--border-color);
-    padding: 1rem 0;
-    margin-bottom: 2rem;
+/* Header */
+.dashboard-header {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    padding: 1.25rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
 }
 
-.agenda-card {
-    padding: 2rem;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
-.table-container {
-    overflow-x: auto;
+.brand-icon {
+    color: var(--primary);
+    width: 32px;
+    height: 32px;
 }
 
-.button-link {
-    display: inline-block;
+.brand h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+.btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--text-light);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
     padding: 0.5rem 1rem;
-    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-logout svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-logout:hover {
+    background-color: var(--border);
+    color: var(--danger);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    padding: 3.5rem 1.5rem;
+    color: white;
+    margin-bottom: -3rem;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-content h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin: 0 0 0.75rem 0;
+    letter-spacing: -0.025em;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: #bfdbfe;
+    margin: 0;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
+/* Main Content */
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* States */
+.loading-state, .empty-state {
+    background: white;
+    border-radius: 1rem;
+    padding: 4rem 2rem;
     text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-top: 1rem;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.empty-icon {
+    color: var(--text-light);
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.5rem auto;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--text-light);
+}
+
+/* Grid & Cards */
+.appointments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.appointment-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.appointment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    background: var(--surface);
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.date-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.day {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    line-height: 1;
+}
+
+.month-year {
+    display: flex;
+    flex-direction: column;
+}
+
+.month {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    text-transform: uppercase;
+}
+
+.year {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.time-info {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #e0f2fe;
+    color: var(--primary-dark);
+    padding: 0.35rem 0.75rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.time-info svg {
+    width: 16px;
+    height: 16px;
+}
+
+.card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+.doctor-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.doctor-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.doctor-details h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.specialty {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.status-wrapper {
+    display: flex;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Status Colors */
+.status-0 { background: #fffbeb; color: #b45309; border: 1px solid #fef3c7; }
+.status-0 .status-dot { background: #f59e0b; }
+
+.status-1 { background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; }
+.status-1 .status-dot { background: #3b82f6; }
+
+.status-2 { background: #ecfdf5; color: #047857; border: 1px solid #d1fae5; }
+.status-2 .status-dot { background: #10b981; }
+
+.status-3 { background: #fef2f2; color: #b91c1c; border: 1px solid #fee2e2; }
+.status-3 .status-dot { background: #ef4444; }
+
+.status-4 { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+.status-4 .status-dot { background: #64748b; }
+
+.card-footer {
+    padding: 1.25rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+}
+
+/* Buttons */
+.btn-join {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);
+}
+
+.btn-join:hover {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-dark) 100%);
+    box-shadow: 0 6px 8px -1px rgba(14, 165, 233, 0.4);
+}
+
+.btn-join svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-waiting {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--bg-color);
+    color: var(--text-light);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    border: 1px dashed var(--border);
+}
+
+.btn-waiting svg {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 640px) {
+    .appointments-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-section {
+        padding: 2.5rem 1rem;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.75rem;
+    }
 }

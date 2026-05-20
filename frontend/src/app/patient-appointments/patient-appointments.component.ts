@@ -30,7 +30,7 @@ export class PatientAppointmentsComponent implements OnInit {
     this.http.get<any[]>(`${environment.apiUrl}/appointments/patient/${this.patientId}`)
       .subscribe({
         next: (data) => {
-          this.appointments = data;
+          this.appointments = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
           this.loading = false;
         },
         error: () => {
@@ -65,6 +65,14 @@ export class PatientAppointmentsComponent implements OnInit {
     if (!time) return '';
     const parts = time.split(':');
     return `${parts[0]}:${parts[1]}`;
+  }
+
+  isPastAppointment(dateStr: string): boolean {
+    const aptDate = new Date(dateStr);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    aptDate.setHours(0, 0, 0, 0);
+    return aptDate.getTime() < today.getTime();
   }
 
   logout() {

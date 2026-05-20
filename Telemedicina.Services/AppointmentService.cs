@@ -30,17 +30,43 @@ public class AppointmentService : IAppointmentService
 
     public async Task<IEnumerable<Appointment>> GetDoctorAppointmentsByMonthAsync(int doctorId, int year, int month)
     {
-        return await _repository.GetDoctorAppointmentsByMonthAsync(doctorId, year, month);
+        var appointments = await _repository.GetDoctorAppointmentsByMonthAsync(doctorId, year, month);
+        return await AutoUpdatePastAppointmentsAsync(appointments);
     }
 
     public async Task<IEnumerable<Appointment>> GetDoctorAppointmentsAsync(int doctorId)
     {
-        return await _repository.GetDoctorAppointmentsAsync(doctorId);
+        var appointments = await _repository.GetDoctorAppointmentsAsync(doctorId);
+        return await AutoUpdatePastAppointmentsAsync(appointments);
     }
 
     public async Task<IEnumerable<Appointment>> GetPatientAppointmentsAsync(int patientId)
     {
-        return await _repository.GetPatientAppointmentsAsync(patientId);
+        var appointments = await _repository.GetPatientAppointmentsAsync(patientId);
+        return await AutoUpdatePastAppointmentsAsync(appointments);
+    }
+
+    private async Task<IEnumerable<Appointment>> AutoUpdatePastAppointmentsAsync(IEnumerable<Appointment> appointments)
+    {
+        var today = System.DateTime.Today;
+        bool changed = false;
+
+        foreach (var apt in appointments)
+        {
+            if (apt.Date.Date < today && (apt.Status == Domain.Enums.AppointmentStatus.Agendado || apt.Status == Domain.Enums.AppointmentStatus.EmEspera))
+            {
+                apt.Status = Domain.Enums.AppointmentStatus.Atendido;
+                _repository.Update(apt);
+                changed = true;
+            }
+        }
+
+        if (changed)
+        {
+            await _repository.SaveChangesAsync();
+        }
+
+        return appointments;
     }
 
     public async Task<bool> UpdateStatusAsync(int appointmentId, Telemedicina.Domain.Enums.AppointmentStatus status)
