@@ -4,8 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:ClinifyMobile.ViewModels"
+    xmlns:cv="clr-namespace:ClinifyMobile.Converters"
     Shell.NavBarIsVisible="False"
     BackgroundColor="#F0F4FF">
+
+    <ContentPage.Resources>
+        <cv:InvertedBoolConverter x:Key="InvertedBool" />
+    </ContentPage.Resources>
 
     <ScrollView>
         <Grid RowDefinitions="*, Auto, *" Padding="0">
@@ -55,99 +60,205 @@
                         HorizontalOptions="Center" />
 
                     <Label
-                        Text="Plataforma de Telemedicina"
+                        Text="Acesso do Profissional"
                         FontSize="13"
                         TextColor="#8A9BB0"
                         HorizontalOptions="Center"
+                        IsVisible="{Binding IsDoctorProfile}"
                         Margin="0,4,0,28" />
 
-                    <!-- Campo E-mail -->
                     <Label
-                        Text="E-mail"
+                        Text="Acesso do Paciente"
                         FontSize="13"
-                        FontAttributes="Bold"
-                        TextColor="#4A5568"
-                        Margin="0,0,0,6" />
+                        TextColor="#8A9BB0"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsPatientProfile}"
+                        Margin="0,4,0,28" />
 
-                    <Frame
-                        Padding="4,0"
-                        BackgroundColor="#F7FAFF"
-                        BorderColor="#D1E3FF"
-                        CornerRadius="12"
-                        Margin="0,0,0,16"
-                        HasShadow="False">
-                        <Entry
-                            x:Name="EmailEntry"
-                            Text="{Binding Email}"
-                            Placeholder="seu@email.com"
-                            PlaceholderColor="#B0BEC5"
-                            Keyboard="Email"
-                            ReturnType="Next"
-                            BackgroundColor="Transparent"
-                            TextColor="#1A2E4A"
-                            FontSize="15"
-                            Margin="8,4" />
-                    </Frame>
+                    <!-- Profile Toggle -->
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="12" Margin="0,0,0,24">
+                        <Button
+                            Grid.Column="0"
+                            Text="Sou Profissional"
+                            Command="{Binding SetProfileCommand}"
+                            CommandParameter="doctor"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            FontSize="14"
+                            FontAttributes="Bold">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="BackgroundColor" Value="#F7FAFF" />
+                                    <Setter Property="TextColor" Value="#4A5568" />
+                                    <Style.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsDoctorProfile}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="#4A90D9" />
+                                            <Setter Property="TextColor" Value="White" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
 
-                    <!-- Campo Senha -->
-                    <Label
-                        Text="Senha"
-                        FontSize="13"
-                        FontAttributes="Bold"
-                        TextColor="#4A5568"
-                        Margin="0,0,0,6" />
+                        <Button
+                            Grid.Column="1"
+                            Text="Sou Paciente"
+                            Command="{Binding SetProfileCommand}"
+                            CommandParameter="patient"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            FontSize="14"
+                            FontAttributes="Bold">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="BackgroundColor" Value="#F7FAFF" />
+                                    <Setter Property="TextColor" Value="#4A5568" />
+                                    <Style.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsPatientProfile}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="#4A90D9" />
+                                            <Setter Property="TextColor" Value="White" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
 
-                    <Frame
-                        Padding="4,0"
-                        BackgroundColor="#F7FAFF"
-                        BorderColor="#D1E3FF"
-                        CornerRadius="12"
-                        Margin="0,0,0,8"
-                        HasShadow="False">
-                        <Entry
-                            x:Name="PasswordEntry"
-                            Text="{Binding Password}"
-                            Placeholder="••••••••"
-                            PlaceholderColor="#B0BEC5"
-                            IsPassword="True"
-                            ReturnType="Done"
-                            ReturnCommand="{Binding LoginCommand}"
-                            BackgroundColor="Transparent"
-                            TextColor="#1A2E4A"
-                            FontSize="15"
-                            Margin="8,4" />
-                    </Frame>
+                    <!-- DOCTOR FIELDS -->
+                    <VerticalStackLayout IsVisible="{Binding IsDoctorProfile}" Spacing="0">
+                        <!-- Campo E-mail -->
+                        <Label
+                            Text="E-mail"
+                            FontSize="13"
+                            FontAttributes="Bold"
+                            TextColor="#4A5568"
+                            Margin="0,0,0,6" />
 
-                    <!-- Mensagem de erro -->
-                    <Label
-                        Text="{Binding ErrorMessage}"
-                        TextColor="#E74C3C"
-                        FontSize="13"
-                        IsVisible="{Binding HasError}"
-                        Margin="0,4,0,8"
-                        HorizontalOptions="Center" />
+                        <Frame
+                            Padding="4,0"
+                            BackgroundColor="#F7FAFF"
+                            BorderColor="#D1E3FF"
+                            CornerRadius="12"
+                            Margin="0,0,0,16"
+                            HasShadow="False">
+                            <Entry
+                                x:Name="EmailEntry"
+                                Text="{Binding Email}"
+                                Placeholder="seu@email.com"
+                                PlaceholderColor="#B0BEC5"
+                                Keyboard="Email"
+                                ReturnType="Next"
+                                BackgroundColor="Transparent"
+                                TextColor="#1A2E4A"
+                                FontSize="15"
+                                Margin="8,4" />
+                        </Frame>
 
-                    <!-- Botão Entrar -->
-                    <Button
-                        Text="Entrar"
-                        Command="{Binding LoginCommand}"
-                        BackgroundColor="#4A90D9"
-                        TextColor="White"
-                        FontSize="16"
-                        FontAttributes="Bold"
-                        CornerRadius="14"
-                        HeightRequest="52"
-                        Margin="0,12,0,16" />
+                        <!-- Campo Senha -->
+                        <Label
+                            Text="Senha"
+                            FontSize="13"
+                            FontAttributes="Bold"
+                            TextColor="#4A5568"
+                            Margin="0,0,0,6" />
 
-                    <!-- Link Cadastrar -->
-                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
-                        <Label Text="Não tem conta?" TextColor="#8A9BB0" FontSize="14" VerticalOptions="Center" />
-                        <Label Text="Cadastre-se" TextColor="#4A90D9" FontSize="14" FontAttributes="Bold" VerticalOptions="Center">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding GoToRegisterCommand}" />
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </HorizontalStackLayout>
+                        <Frame
+                            Padding="4,0"
+                            BackgroundColor="#F7FAFF"
+                            BorderColor="#D1E3FF"
+                            CornerRadius="12"
+                            Margin="0,0,0,8"
+                            HasShadow="False">
+                            <Entry
+                                x:Name="PasswordEntry"
+                                Text="{Binding Password}"
+                                Placeholder="••••••••"
+                                PlaceholderColor="#B0BEC5"
+                                IsPassword="True"
+                                ReturnType="Done"
+                                ReturnCommand="{Binding LoginCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="#1A2E4A"
+                                FontSize="15"
+                                Margin="8,4" />
+                        </Frame>
+
+                        <!-- Mensagem de erro -->
+                        <Label
+                            Text="{Binding ErrorMessage}"
+                            TextColor="#E74C3C"
+                            FontSize="13"
+                            IsVisible="{Binding HasError}"
+                            Margin="0,4,0,8"
+                            HorizontalOptions="Center" />
+
+                        <!-- Botão Entrar -->
+                        <Button
+                            Text="Entrar"
+                            Command="{Binding LoginCommand}"
+                            BackgroundColor="#4A90D9"
+                            TextColor="White"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            CornerRadius="14"
+                            HeightRequest="52"
+                            Margin="0,12,0,16" />
+
+                        <!-- Link Cadastrar -->
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label Text="Não tem conta?" TextColor="#8A9BB0" FontSize="14" VerticalOptions="Center" />
+                            <Label Text="Cadastre-se" TextColor="#4A90D9" FontSize="14" FontAttributes="Bold" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GoToRegisterCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <!-- PATIENT FIELDS -->
+                    <VerticalStackLayout IsVisible="{Binding IsPatientProfile}" Spacing="0">
+                        <!-- Patient Error / Success -->
+                        <Label Text="{Binding ErrorMessage}" TextColor="#E74C3C" FontSize="13" IsVisible="{Binding HasError}" Margin="0,4,0,8" HorizontalOptions="Center" />
+                        <Label Text="{Binding SuccessMessage}" TextColor="#27AE60" FontSize="13" IsVisible="{Binding HasSuccessMessage}" Margin="0,4,0,8" HorizontalOptions="Center" />
+
+                        <!-- Campo E-mail Paciente -->
+                        <Label Text="E-mail" FontSize="13" FontAttributes="Bold" TextColor="#4A5568" Margin="0,0,0,6" />
+                        <Frame Padding="4,0" BackgroundColor="#F7FAFF" BorderColor="#D1E3FF" CornerRadius="12" Margin="0,0,0,16" HasShadow="False">
+                            <Entry Text="{Binding PatientEmail}" Placeholder="paciente@exemplo.com" Keyboard="Email" ReturnType="Next" BackgroundColor="Transparent" TextColor="#1A2E4A" FontSize="15" Margin="8,4" />
+                        </Frame>
+
+                        <!-- Campo Senha Paciente -->
+                        <VerticalStackLayout IsVisible="{Binding IsFirstAccess, Converter={StaticResource InvertedBool}}">
+                            <Label Text="Senha" FontSize="13" FontAttributes="Bold" TextColor="#4A5568" Margin="0,0,0,6" />
+                            <Frame Padding="4,0" BackgroundColor="#F7FAFF" BorderColor="#D1E3FF" CornerRadius="12" Margin="0,0,0,8" HasShadow="False">
+                                <Entry Text="{Binding PatientPassword}" Placeholder="••••••••" IsPassword="True" ReturnType="Done" ReturnCommand="{Binding LoginCommand}" BackgroundColor="Transparent" TextColor="#1A2E4A" FontSize="15" Margin="8,4" />
+                            </Frame>
+                        </VerticalStackLayout>
+
+                        <!-- Botões -->
+                        <Button Text="Entrar" Command="{Binding LoginCommand}" IsVisible="{Binding IsFirstAccess, Converter={StaticResource InvertedBool}}" BackgroundColor="#4A90D9" TextColor="White" FontSize="16" FontAttributes="Bold" CornerRadius="14" HeightRequest="52" Margin="0,12,0,16" />
+                        
+                        <Button Text="Solicitar Senha" Command="{Binding FirstAccessCommand}" IsVisible="{Binding IsFirstAccess}" BackgroundColor="#4A90D9" TextColor="White" FontSize="16" FontAttributes="Bold" CornerRadius="14" HeightRequest="52" Margin="0,12,0,16" />
+
+                        <!-- Toggle First Access -->
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" IsVisible="{Binding IsFirstAccess, Converter={StaticResource InvertedBool}}">
+                            <Label Text="Primeira vez aqui?" TextColor="#8A9BB0" FontSize="14" VerticalOptions="Center" />
+                            <Label Text="Solicitar primeiro acesso" TextColor="#4A90D9" FontSize="14" FontAttributes="Bold" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleFirstAccessCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" IsVisible="{Binding IsFirstAccess}">
+                            <Label Text="Já tem a senha?" TextColor="#8A9BB0" FontSize="14" VerticalOptions="Center" />
+                            <Label Text="Fazer login" TextColor="#4A90D9" FontSize="14" FontAttributes="Bold" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleFirstAccessCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
 
                     <!-- Loading -->
                     <ActivityIndicator

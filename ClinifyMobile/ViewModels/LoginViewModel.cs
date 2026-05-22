@@ -17,6 +17,9 @@ public class LoginViewModel : BaseViewModel
 
         LoginCommand = new Command(async () => await DoLoginAsync(), () => !IsBusy);
         GoToRegisterCommand = new Command(async () => await GoToRegisterAsync());
+        SetProfileCommand = new Command<string>(p => SetProfile(p));
+        ToggleFirstAccessCommand = new Command(ToggleFirstAccess);
+        FirstAccessCommand = new Command(async () => await DoFirstAccessAsync(), () => !IsBusy);
     }
 
     // ─── Properties ──────────────────────────────────────────────────────────
@@ -35,28 +38,121 @@ public class LoginViewModel : BaseViewModel
         set => SetProperty(ref _password, value);
     }
 
+    private string _profileType = "doctor";
+    public string ProfileType
+    {
+        get => _profileType;
+        set { SetProperty(ref _profileType, value); OnPropertyChanged(nameof(IsDoctorProfile)); OnPropertyChanged(nameof(IsPatientProfile)); }
+    }
+    public bool IsDoctorProfile => ProfileType == "doctor";
+    public bool IsPatientProfile => ProfileType == "patient";
+
+    private bool _isFirstAccess = false;
+    public bool IsFirstAccess
+    {
+        get => _isFirstAccess;
+        set => SetProperty(ref _isFirstAccess, value);
+    }
+
+    private string _patientEmail = string.Empty;
+    public string PatientEmail
+    {
+        get => _patientEmail;
+        set => SetProperty(ref _patientEmail, value);
+    }
+
+    private string _patientPassword = string.Empty;
+    public string PatientPassword
+    {
+        get => _patientPassword;
+        set => SetProperty(ref _patientPassword, value);
+    }
+
+    private string _successMessage = string.Empty;
+    public string SuccessMessage
+    {
+        get => _successMessage;
+        set { SetProperty(ref _successMessage, value); OnPropertyChanged(nameof(HasSuccessMessage)); }
+    }
+    public bool HasSuccessMessage => !string.IsNullOrEmpty(SuccessMessage);
+
     // ─── Commands ─────────────────────────────────────────────────────────────
 
     public ICommand LoginCommand { get; }
     public ICommand GoToRegisterCommand { get; }
+    public ICommand SetProfileCommand { get; }
+    public ICommand ToggleFirstAccessCommand { get; }
+    public ICommand FirstAccessCommand { get; }
 
     // ─── Logic ───────────────────────────────────────────────────────────────
 
+    private void SetProfile(string profile)
+    {
+        ProfileType = profile;
+        ErrorMessage = string.Empty;
+        SuccessMessage = string.Empty;
+    }
+
+    private void ToggleFirstAccess()
+    {
+        IsFirstAccess = !IsFirstAccess;
+        ErrorMessage = string.Empty;
+        SuccessMessage = string.Empty;
+    }
+
     private async Task DoLoginAsync()
     {
-        if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+        ErrorMessage = string.Empty;
+        SuccessMessage = string.Empty;
+
+        if (IsDoctorProfile)
         {
-            ErrorMessage = "Preencha o e-mail e a senha.";
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+            {
+                ErrorMessage = "Preencha o e-mail e a senha.";
+                return;
+            }
+
+            await ExecuteAsync(async () =>
+            {
+                var doctor = await _authService.LoginAsync(Email.Trim(), Password);
+                var route = _session.CanAccessAttendance ? "//AgendaPage" : "//AgendaPage";
+                await Shell.Current.GoToAsync(route);
+            });
+        }
+        else
+        {
+            if (string.IsNullOrWhiteSpace(PatientEmail) || string.IsNullOrWhiteSpace(PatientPassword))
+            {
+                ErrorMessage = "Preencha o e-mail e a senha.";
+                return;
+            }
+
+            await ExecuteAsync(async () =>
+            {
+                var patient = await _authService.PatientLoginAsync(PatientEmail.Trim(), PatientPassword);
+                await Shell.Current.GoToAsync("//PatientAppointmentsPage");
+            });
+        }
+    }
+
+    private async Task DoFirstAccessAsync()
+    {
+        ErrorMessage = string.Empty;
+        SuccessMessage = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(PatientEmail))
+        {
+            ErrorMessage = "Preencha o e-mail.";
             return;
         }
 
         await ExecuteAsync(async () =>
         {
-            var doctor = await _authService.LoginAsync(Email.Trim(), Password);
-
-            // Navega para a página correta conforme o role
-            var route = _session.CanAccessAttendance ? "//AgendaPage" : "//AgendaPage";
-            await Shell.Current.GoToAsync(route);
+            var msg = await _authService.PatientFirstAccessAsync(PatientEmail.Trim());
+            SuccessMessage = msg;
+            IsFirstAccess = false;
+            PatientPassword = string.Empty;
         });
     }
 
@@ -65,6 +161,8 @@ public class LoginViewModel : BaseViewModel
     {
         if (_session.IsLoggedIn)
             await Shell.Current.GoToAsync("//AgendaPage");
+        else if (_session.IsPatientLoggedIn)
+            await Shell.Current.GoToAsync("//PatientAppointmentsPage");
     }
 
     private async Task GoToRegisterAsync()

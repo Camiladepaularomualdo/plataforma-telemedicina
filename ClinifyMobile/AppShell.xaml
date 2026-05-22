@@ -39,6 +39,12 @@
         Title="Agenda"
         ContentTemplate="{DataTemplate views:AgendaPage}" />
 
+    <!-- Patient Appointments Principal -->
+    <ShellContent
+        Route="PatientAppointmentsPage"
+        Title="Meus Agendamentos"
+        ContentTemplate="{DataTemplate views:PatientAppointmentsPage}" />
+
     <!-- Páginas de detalhe (modal-style) -->
     <!-- Registradas via Routing.RegisterRoute no AppShell.xaml.cs -->
 

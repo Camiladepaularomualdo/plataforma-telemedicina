@@ -54,6 +54,7 @@ public static class MauiProgram
         builder.Services.AddTransient<AppointmentsListViewModel>();
         builder.Services.AddTransient<AddPatientViewModel>();
         builder.Services.AddTransient<AddAppointmentViewModel>();
+        builder.Services.AddTransient<PatientAppointmentsViewModel>();
 
         // ─── Views ──────────────────────────────────────────────────────────
         builder.Services.AddTransient<LoginPage>();
@@ -62,6 +63,7 @@ public static class MauiProgram
         builder.Services.AddTransient<AppointmentsListPage>();
         builder.Services.AddTransient<AddPatientPage>();
         builder.Services.AddTransient<AddAppointmentPage>();
+        builder.Services.AddTransient<PatientAppointmentsPage>();
 
         // Shell e App precisam ser Singleton
         builder.Services.AddSingleton<AppShell>();

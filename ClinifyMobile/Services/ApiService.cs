@@ -108,8 +108,8 @@ public class ApiService
         var body = await response.Content.ReadAsStringAsync();
         var message = response.StatusCode switch
         {
-            System.Net.HttpStatusCode.Unauthorized => "Sessão expirada. Faça login novamente.",
-            System.Net.HttpStatusCode.NotFound     => "Recurso não encontrado.",
+            System.Net.HttpStatusCode.Unauthorized => string.IsNullOrEmpty(body) ? "Sessão expirada ou credenciais inválidas." : body.Trim('"'),
+            System.Net.HttpStatusCode.NotFound     => string.IsNullOrEmpty(body) ? "Recurso não encontrado." : body.Trim('"'),
             System.Net.HttpStatusCode.BadRequest   => string.IsNullOrEmpty(body) ? "Dados inválidos." : body.Trim('"'),
             _ => $"Erro do servidor ({(int)response.StatusCode}): {body}"
         };

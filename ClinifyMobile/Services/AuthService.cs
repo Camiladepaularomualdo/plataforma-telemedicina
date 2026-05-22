@@ -54,5 +54,25 @@ public class AuthService
         _session.Clear();
     }
 
-    public bool IsLoggedIn => _session.IsLoggedIn;
+    public async Task<Patient> PatientLoginAsync(string email, string password)
+    {
+        var request = new LoginRequest { Email = email, Password = password };
+        var patient = await _api.PostAsync<Patient>("auth/patient/login", request)
+                      ?? throw new ApiException("Resposta inválida do servidor.");
+
+        await _session.SavePatientSessionAsync(patient.Id, patient.Name);
+
+        return patient;
+    }
+
+    public async Task<string> PatientFirstAccessAsync(string email)
+    {
+        var request = new { Email = email };
+        var response = await _api.PostAsync<System.Collections.Generic.Dictionary<string, string>>("auth/patient/first-access", request)
+                       ?? throw new ApiException("Resposta inválida do servidor.");
+
+        return response.TryGetValue("message", out var msg) ? msg : "Senha solicitada com sucesso.";
+    }
+
+    public bool IsLoggedIn => _session.HasAnySession;
 }
